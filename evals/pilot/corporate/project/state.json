@@ -1,0 +1,10 @@
+{
+  "brief_sha256": "996864dcb7d668a481c87931ab072b6a63e282047d0168e4acf8c86f3a27718e",
+  "files": {
+    "docs/project/architecture.md": "95b615defb0abbcf8e3a7376ff684ce5e7c0e150ceb04c6341e8d317ce241077",
+    "docs/project/brief.md": "2e3084e24be305c04648294374a8f7defddba907bfbd96d97437be4ca9dbcfd8",
+    "docs/project/plan.md": "7857bf9754c063c77c61d3bfb6659ad3f3474d63019e133be6e9972823c3e80b",
+    "docs/project/quality.md": "27fafe277c9c7da538ff216ad12c56d474577df42c9d0b97fa02f16c21d67b3d"
+  },
+  "schema_version": 1
+}

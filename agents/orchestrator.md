@@ -40,3 +40,9 @@ explícites de l'usuari prevalen.
 
 Registra tokens/durada només quan el motor els proporcioni. No simulis costos ni
 mantinguis agents en bucles de supervisió sense una necessitat concreta.
+
+Per reprendre feina entre sessions, consulta `scripts/continuity.py resume`; el pla
+té un únic escriptor i els fills retornen evidències. Abans de cedir feina inacabada,
+desa estat, bloquejos i següent acció segons `docs/foundation/continuity.md`. Els
+experiments comparatius segueixen `evals/README.md`; no confonguis selecció recomanada
+amb model observat ni desconegut amb consum zero.

@@ -1,0 +1,98 @@
+{
+  "memory": [
+    {
+      "claim": "Les sol·licituds es processen només al navegador, no s'envien missatges ni es desen dades.",
+      "id": "requests-stay-local",
+      "sources": [
+        {
+          "path": "site/index.html",
+          "quote": "Demostració local: aquest formulari no envia cap missatge ni desa les dades. El resum només es mostra en aquesta pàgina.",
+          "sha256": "058d1aff1b148c61a7d14eb7e7adcb83da2ee6eee2d96e8851577294e4c59410"
+        }
+      ]
+    }
+  ],
+  "plan": {
+    "next_action": "",
+    "objective": "Presentar serveis i preparar una sol·licitud local amb el primer recorregut verificat.",
+    "tasks": [
+      {
+        "acceptance": [
+          "La pàgina presenta els tres serveis i la navegació porta al contacte.",
+          "La composició és responsive, té focus visible i no usa recursos externs."
+        ],
+        "blockers": [],
+        "evidence": [
+          "site/index.html",
+          "docs/project/browser-verification.json"
+        ],
+        "id": "mvp-1",
+        "status": "done",
+        "title": "Pàgina de serveis en català"
+      },
+      {
+        "acceptance": [
+          "Els valors buits o invàlids mostren errors i no activen cap resum d'èxit.",
+          "Els valors vàlids creen un resum amb el servei triat sense fer peticions de xarxa.",
+          "La pàgina explica que és una demostració local i que no envia missatges."
+        ],
+        "blockers": [],
+        "evidence": [
+          "site/index.html",
+          "docs/project/browser-verification.json"
+        ],
+        "id": "mvp-2",
+        "status": "done",
+        "title": "Formulari local amb resum"
+      },
+      {
+        "acceptance": [
+          "Verificar el formulari amb valors buits, invàlids i vàlids.",
+          "Verificar el focus de teclat i l'absència de desbordament horitzontal a 390 px."
+        ],
+        "blockers": [],
+        "evidence": [
+          "site/index.html",
+          "docs/project/browser-verification.json"
+        ],
+        "id": "browser-verify",
+        "status": "done",
+        "title": "Verificació de navegador"
+      }
+    ]
+  },
+  "revision": 4,
+  "schema_version": 1,
+  "task_evidence": {
+    "browser-verify": [
+      {
+        "path": "site/index.html",
+        "sha256": "058d1aff1b148c61a7d14eb7e7adcb83da2ee6eee2d96e8851577294e4c59410"
+      },
+      {
+        "path": "docs/project/browser-verification.json",
+        "sha256": "56cf4369ab9796fafd295ff2ac6fff87a962ef4a6c1ff8b034f5c165a4cd2920"
+      }
+    ],
+    "mvp-1": [
+      {
+        "path": "site/index.html",
+        "sha256": "058d1aff1b148c61a7d14eb7e7adcb83da2ee6eee2d96e8851577294e4c59410"
+      },
+      {
+        "path": "docs/project/browser-verification.json",
+        "sha256": "56cf4369ab9796fafd295ff2ac6fff87a962ef4a6c1ff8b034f5c165a4cd2920"
+      }
+    ],
+    "mvp-2": [
+      {
+        "path": "site/index.html",
+        "sha256": "058d1aff1b148c61a7d14eb7e7adcb83da2ee6eee2d96e8851577294e4c59410"
+      },
+      {
+        "path": "docs/project/browser-verification.json",
+        "sha256": "56cf4369ab9796fafd295ff2ac6fff87a962ef4a6c1ff8b034f5c165a4cd2920"
+      }
+    ]
+  }
+}

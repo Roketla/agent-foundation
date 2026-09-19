@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ca">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Estudi Blau: serveis de disseny per a petites empreses locals.">
+    <title>Estudi Blau — Disseny per a negocis locals</title>
+    <style>
+      :root {
+        --blue-night: #082b59;
+        --blue-ink: #0b4a88;
+        --blue-sky: #c9e8ff;
+        --paper: #f8fbff;
+        --coral: #bc3327;
+        --ink: #102033;
+        --line: #a8c5e0;
+        --measure: 72rem;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 1rem;
+        line-height: 1.55;
+      }
+      a { color: inherit; }
+      a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+        outline: 3px solid var(--coral);
+        outline-offset: 3px;
+      }
+      .skip-link {
+        position: absolute; left: 1rem; top: -4rem; z-index: 2;
+        padding: .55rem .8rem; background: var(--paper); color: var(--blue-night);
+      }
+      .skip-link:focus { top: 1rem; }
+      .shell { width: min(var(--measure), calc(100% - 2rem)); margin: 0 auto; }
+      .masthead { background: var(--blue-night); color: white; padding: 1rem 0 3.75rem; }
+      .bar { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+      .brand { font-weight: 760; text-decoration: none; letter-spacing: -.035em; }
+      nav { display: flex; flex-wrap: wrap; gap: 1rem; }
+      nav a { text-underline-offset: .24em; }
+      .hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(15rem, .65fr); gap: 2rem; align-items: end; padding-top: 4.5rem; }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 {
+        max-width: 9ch; margin-bottom: 0; font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+        font-size: clamp(4.25rem, 14vw, 10rem); font-stretch: condensed; font-weight: 800;
+        letter-spacing: -.085em; line-height: .74;
+      }
+      h1 span { display: block; color: var(--blue-sky); }
+      .hero-copy { max-width: 31rem; padding-bottom: .3rem; font-size: 1.14rem; }
+      .hero-copy a, .button { display: inline-block; margin-top: .8rem; padding: .72rem 1rem; background: white; color: var(--blue-night); font-weight: 720; text-decoration: none; }
+      main { padding: 4.5rem 0 5rem; }
+      section { scroll-margin-top: 1.5rem; }
+      .section-heading { max-width: 42rem; margin-bottom: 2.5rem; }
+      h2 { color: var(--blue-night); font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif; font-size: clamp(2.2rem, 6vw, 4.3rem); letter-spacing: -.06em; line-height: .95; }
+      .services { border-top: 2px solid var(--blue-night); }
+      .service { display: grid; grid-template-columns: minmax(10rem, .7fr) minmax(0, 1.3fr); gap: 1.5rem; padding: 1.6rem 0; border-bottom: 1px solid var(--line); }
+      .service h3 { margin: 0; color: var(--blue-ink); font-size: 1.2rem; }
+      .service p { max-width: 45rem; margin: 0; }
+      .contact { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 7vw, 6rem); margin-top: 5.5rem; padding-top: 3rem; border-top: 2px solid var(--blue-night); }
+      .demo-note { padding: 1rem 1.1rem; background: var(--blue-sky); color: var(--blue-night); font-weight: 640; }
+      form { max-width: 40rem; }
+      label { display: block; margin: 1.15rem 0 .35rem; font-weight: 700; }
+      input, select { width: 100%; min-height: 2.8rem; padding: .55rem .65rem; border: 1px solid var(--blue-ink); border-radius: 0; background: white; color: var(--ink); font: inherit; }
+      .field-error { min-height: 1.4rem; margin: .3rem 0 0; color: var(--coral); font-weight: 650; }
+      button { margin-top: 1.2rem; min-height: 2.8rem; border: 2px solid var(--blue-ink); border-radius: 0; padding: .55rem 1rem; background: var(--blue-ink); color: white; font: inherit; font-weight: 750; cursor: pointer; }
+      button:hover { background: var(--blue-night); }
+      .result { margin-top: 1.5rem; padding: 1.15rem; border-left: 5px solid var(--blue-ink); background: white; }
+      .result[hidden] { display: none; }
+      .result h3 { margin-bottom: .45rem; color: var(--blue-night); }
+      .result p:last-child { margin-bottom: 0; }
+      footer { padding: 1.4rem 0; border-top: 1px solid var(--line); color: var(--blue-night); font-size: .94rem; }
+      @media (max-width: 620px) {
+        .masthead { padding-bottom: 2.6rem; }
+        .hero, .contact, .service { grid-template-columns: 1fr; }
+        .hero { gap: 1.7rem; padding-top: 3.6rem; }
+        h1 { font-size: clamp(4rem, 22vw, 6.75rem); }
+        main { padding-top: 3.3rem; }
+        .contact { margin-top: 3.5rem; }
+      }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#contingut">Vés al contingut</a>
+    <header class="masthead">
+      <div class="shell">
+        <div class="bar">
+          <a class="brand" href="#inici" aria-label="Estudi Blau, inici">Estudi Blau</a>
+          <nav aria-label="Navegació principal">
+            <a href="#serveis">Serveis</a>
+            <a href="#contacte">Contacte</a>
+          </nav>
+        </div>
+        <div class="hero" id="inici">
+          <h1>Estudi<span>Blau</span></h1>
+          <div class="hero-copy">
+            <p>Disseny clar per a negocis que volen explicar bé què fan, aquí a prop.</p>
+            <a href="#contacte">Preparar una sol·licitud</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="shell" id="contingut">
+      <section id="serveis" aria-labelledby="serveis-titol">
+        <div class="section-heading">
+          <h2 id="serveis-titol">Disseny que dona forma a una conversa útil.</h2>
+          <p>Tria el punt de partida que necessita el teu negoci. La proposta es concreta a partir del que vols comunicar.</p>
+        </div>
+        <div class="services">
+          <article class="service">
+            <h3>Identitat i sistema</h3>
+            <p>Una base visual coherent perquè el nom, els missatges i els materials parlin amb la mateixa veu.</p>
+          </article>
+          <article class="service">
+            <h3>Web corporatiu</h3>
+            <p>Una presència web ordenada per presentar serveis, prioritzar informació i facilitar el contacte.</p>
+          </article>
+          <article class="service">
+            <h3>Materials de proximitat</h3>
+            <p>Peces impreses i digitals per als moments en què el negoci es troba amb les persones.</p>
+          </article>
+        </div>
+      </section>
+      <section class="contact" id="contacte" aria-labelledby="contacte-titol">
+        <div>
+          <h2 id="contacte-titol">Expliquem-ho.</h2>
+          <p>Indica una manera de començar i prepara un resum de la teva petició.</p>
+          <p class="demo-note">Demostració local: aquest formulari no envia cap missatge ni desa les dades. El resum només es mostra en aquesta pàgina.</p>
+        </div>
+        <div>
+          <form id="request-form" novalidate>
+            <label for="name">Nom</label>
+            <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-error">
+            <p class="field-error" id="name-error"></p>
+            <label for="email">Correu electrònic</label>
+            <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-error">
+            <p class="field-error" id="email-error"></p>
+            <label for="service">Servei d'interès</label>
+            <select id="service" name="service" required aria-describedby="service-error">
+              <option value="">Selecciona un servei</option>
+              <option>Identitat i sistema</option>
+              <option>Web corporatiu</option>
+              <option>Materials de proximitat</option>
+            </select>
+            <p class="field-error" id="service-error"></p>
+            <button type="submit">Mostrar el resum local</button>
+          </form>
+          <div class="result" id="request-result" role="status" aria-live="polite" hidden></div>
+        </div>
+      </section>
+    </main>
+    <footer><div class="shell">Estudi Blau · demostració fictícia sense enviament.</div></footer>
+    <script>
+      const form = document.querySelector('#request-form');
+      const result = document.querySelector('#request-result');
+      const fields = {
+        name: { input: document.querySelector('#name'), error: document.querySelector('#name-error'), message: 'Escriu un nom per continuar.' },
+        email: { input: document.querySelector('#email'), error: document.querySelector('#email-error'), message: 'Escriu un correu electrònic vàlid.' },
+        service: { input: document.querySelector('#service'), error: document.querySelector('#service-error'), message: 'Selecciona un servei.' }
+      };
+
+      function validateField(field) {
+        const emptyName = field === fields.name && !field.input.value.trim();
+        field.input.setCustomValidity(emptyName ? field.message : '');
+        const valid = field.input.validity.valid;
+        field.error.textContent = valid ? '' : field.message;
+        field.input.setAttribute('aria-invalid', String(!valid));
+        return valid;
+      }
+
+      Object.values(fields).forEach((field) => field.input.addEventListener('input', () => validateField(field)));
+      fields.service.input.addEventListener('change', () => validateField(fields.service));
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        result.hidden = true;
+        const valid = Object.values(fields).map(validateField).every(Boolean);
+        if (!valid) {
+          const firstInvalid = Object.values(fields).find((field) => !field.input.validity.valid);
+          firstInvalid.input.focus();
+          return;
+        }
+        const name = fields.name.input.value.trim();
+        const service = fields.service.input.value;
+        result.replaceChildren();
+        const title = document.createElement('h3');
+        title.textContent = 'Resum de la sol·licitud';
+        const message = document.createElement('p');
+        message.textContent = `${name}, has seleccionat: ${service}. Aquesta és una demostració local; no s'ha enviat cap missatge.`;
+        result.append(title, message);
+        result.hidden = false;
+      });
+    </script>
+  </body>
+</html>

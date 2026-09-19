@@ -1,0 +1,211 @@
+{
+  "cases": [
+    {
+      "baseline": {
+        "acceptance_rate": null,
+        "attempts_total": 0,
+        "metrics": {
+          "cached_input_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "duration_seconds": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "human_interventions": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "input_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "output_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          }
+        },
+        "model_observation": {
+          "observed_models": [],
+          "unobserved_runs": 0
+        },
+        "outcomes": {
+          "accepted": 0,
+          "blocked": 0,
+          "failed": 0
+        },
+        "sample_count": 0
+      },
+      "candidate": {
+        "acceptance_rate": 0.5,
+        "attempts_total": 2,
+        "metrics": {
+          "cached_input_tokens": {
+            "missing_runs": 1,
+            "observed_runs": 1,
+            "total": 391168
+          },
+          "duration_seconds": {
+            "missing_runs": 1,
+            "observed_runs": 1,
+            "total": 198.855
+          },
+          "human_interventions": {
+            "missing_runs": 0,
+            "observed_runs": 2,
+            "total": 0
+          },
+          "input_tokens": {
+            "missing_runs": 1,
+            "observed_runs": 1,
+            "total": 426513
+          },
+          "output_tokens": {
+            "missing_runs": 1,
+            "observed_runs": 1,
+            "total": 9548
+          }
+        },
+        "model_observation": {
+          "observed_models": [
+            "gpt-5.6-terra"
+          ],
+          "unobserved_runs": 1
+        },
+        "outcomes": {
+          "accepted": 1,
+          "blocked": 0,
+          "failed": 1
+        },
+        "sample_count": 2
+      },
+      "case_id": "corporate-journey",
+      "comparison": {
+        "metrics": null,
+        "status": "unmatched"
+      },
+      "environment": "corporate-v03-chromium151"
+    },
+    {
+      "baseline": {
+        "acceptance_rate": null,
+        "attempts_total": 0,
+        "metrics": {
+          "cached_input_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "duration_seconds": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "human_interventions": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "input_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          },
+          "output_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 0,
+            "total": null
+          }
+        },
+        "model_observation": {
+          "observed_models": [],
+          "unobserved_runs": 0
+        },
+        "outcomes": {
+          "accepted": 0,
+          "blocked": 0,
+          "failed": 0
+        },
+        "sample_count": 0
+      },
+      "candidate": {
+        "acceptance_rate": 1.0,
+        "attempts_total": 1,
+        "metrics": {
+          "cached_input_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 1,
+            "total": 33024
+          },
+          "duration_seconds": {
+            "missing_runs": 0,
+            "observed_runs": 1,
+            "total": 16.124
+          },
+          "human_interventions": {
+            "missing_runs": 0,
+            "observed_runs": 1,
+            "total": 0
+          },
+          "input_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 1,
+            "total": 44743
+          },
+          "output_tokens": {
+            "missing_runs": 0,
+            "observed_runs": 1,
+            "total": 411
+          }
+        },
+        "model_observation": {
+          "observed_models": [
+            "gpt-5.6-luna"
+          ],
+          "unobserved_runs": 0
+        },
+        "outcomes": {
+          "accepted": 1,
+          "blocked": 0,
+          "failed": 0
+        },
+        "sample_count": 1
+      },
+      "case_id": "fresh-resume",
+      "comparison": {
+        "metrics": null,
+        "status": "unmatched"
+      },
+      "environment": "corporate-v03-chromium151"
+    }
+  ],
+  "caveats": [
+    "Cases are compared only when case_id and environment match.",
+    "Metric totals include accepted, failed, and blocked runs; null means no observation.",
+    "cached_input_tokens is a subset of input_tokens and is not added to token volume.",
+    "Token figures are volume, not cost. One sample does not establish improvement.",
+    "Differences are raw totals; unequal sample counts do not support per-run efficiency claims."
+  ],
+  "input_schema_version": 1,
+  "paired_case_count": 0,
+  "record_count": 3,
+  "schema_version": 1,
+  "unmatched": [
+    {
+      "case_id": "corporate-journey",
+      "environment": "corporate-v03-chromium151",
+      "missing_variant": "baseline"
+    },
+    {
+      "case_id": "fresh-resume",
+      "environment": "corporate-v03-chromium151",
+      "missing_variant": "baseline"
+    }
+  ]
+}

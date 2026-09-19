@@ -1,0 +1,32 @@
+{
+  "build": {
+    "duration_seconds": 198.855,
+    "events_sha256": "669fde8f488c4744bc344d37f8cbc97702c1d0524eef6077bb58f0239f432abf",
+    "recorded_effort": "medium",
+    "recorded_model": "gpt-5.6-terra",
+    "source": "Own CLI rollout turn_context and turn.completed event",
+    "thread_id": "01a0bb01-7827-7851-859d-c5053f302965",
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 391168,
+      "input_tokens": 426513,
+      "output_tokens": 9548,
+      "reasoning_output_tokens": 1740
+    }
+  },
+  "resume": {
+    "duration_seconds": 16.124,
+    "events_sha256": "0bc232b5b7a7c00c081cb98eae34605a636e2c014e63a5423a1f83cb676bec40",
+    "recorded_effort": "low",
+    "recorded_model": "gpt-5.6-luna",
+    "source": "Own CLI rollout turn_context and turn.completed event",
+    "thread_id": "01a0bb05-24e2-7ca2-b8be-e8579171b2f0",
+    "usage": {
+      "cache_write_input_tokens": 0,
+      "cached_input_tokens": 33024,
+      "input_tokens": 44743,
+      "output_tokens": 411,
+      "reasoning_output_tokens": 117
+    }
+  }
+}

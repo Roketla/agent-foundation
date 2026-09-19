@@ -1,0 +1,7 @@
+{
+  "memory_claim": "Les sol·licituds es processen només al navegador, no s'envien missatges ni es desen dades.",
+  "memory_source": "site/index.html",
+  "needs_browser_verification": true,
+  "next_action": "Verificar al navegador el formulari, el teclat i la vista mòbil.",
+  "onboarding_ready": true
+}

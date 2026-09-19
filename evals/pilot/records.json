@@ -1,0 +1,164 @@
+{
+  "runs": [
+    {
+      "attempts": 1,
+      "cached_input_tokens": 391168,
+      "case_id": "corporate-journey",
+      "checks": [
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "Keyboard skip link has visible focus",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "Services and contact navigation work",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "Empty form rejects submission and focuses the first error",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "Invalid email rejects submission",
+          "passed": true
+        },
+        {
+          "detail": "The expression evaluated to a falsy value:\n\n  assert.ok(await result.isHidden())\n",
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "Whitespace-only name is rejected",
+          "passed": false
+        },
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "Valid request renders selected service as local summary",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "Repeated submission does not duplicate the summary",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "390px viewport has no horizontal overflow",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/first-verification.json",
+          "name": "No external requests or JavaScript errors",
+          "passed": true
+        }
+      ],
+      "duration_seconds": 198.855,
+      "environment": "corporate-v03-chromium151",
+      "evidence": [
+        "evals/pilot/README.md"
+      ],
+      "human_interventions": 0,
+      "input_tokens": 426513,
+      "model_evidence": "evals/pilot/runtime.json#build",
+      "observed_model": "gpt-5.6-terra",
+      "outcome": "failed",
+      "output_tokens": 9548,
+      "requested_model": "gpt-5.6-terra",
+      "run_id": "pilot-build",
+      "variant": "candidate"
+    },
+    {
+      "attempts": 1,
+      "cached_input_tokens": 33024,
+      "case_id": "fresh-resume",
+      "checks": [
+        {
+          "evidence": "evals/pilot/resume-answer.json",
+          "name": "Exact pending action and sourced memory recovered without history",
+          "passed": true
+        }
+      ],
+      "duration_seconds": 16.124,
+      "environment": "corporate-v03-chromium151",
+      "evidence": [
+        "evals/pilot/README.md"
+      ],
+      "human_interventions": 0,
+      "input_tokens": 44743,
+      "model_evidence": "evals/pilot/runtime.json#resume",
+      "observed_model": "gpt-5.6-luna",
+      "outcome": "accepted",
+      "output_tokens": 411,
+      "requested_model": "gpt-5.6-luna",
+      "run_id": "pilot-resume",
+      "variant": "candidate"
+    },
+    {
+      "attempts": 1,
+      "cached_input_tokens": null,
+      "case_id": "corporate-journey",
+      "checks": [
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "Keyboard skip link has visible focus",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "Services and contact navigation work",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "Empty form rejects submission and focuses the first error",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "Invalid email rejects submission",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "Whitespace-only name is rejected",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "Valid request renders selected service as local summary",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "Repeated submission does not duplicate the summary",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "390px viewport has no horizontal overflow",
+          "passed": true
+        },
+        {
+          "evidence": "evals/pilot/final-verification.json",
+          "name": "No external requests or JavaScript errors",
+          "passed": true
+        }
+      ],
+      "duration_seconds": null,
+      "environment": "corporate-v03-chromium151",
+      "evidence": [
+        "evals/pilot/README.md"
+      ],
+      "human_interventions": 0,
+      "input_tokens": null,
+      "model_evidence": null,
+      "observed_model": null,
+      "outcome": "accepted",
+      "output_tokens": null,
+      "requested_model": "orchestrator-current-session",
+      "run_id": "pilot-orchestrator-fix",
+      "variant": "candidate"
+    }
+  ],
+  "schema_version": 1
+}

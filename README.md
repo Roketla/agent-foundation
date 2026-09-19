@@ -20,6 +20,9 @@ configuració editable de models per a Codex.
 4. Les respostes es desen a `project/brief.json`. En completar-les es generen
    quatre documents a `docs/project/`. En sessions següents, l'agent reprèn el
    treball sense repetir l'entrevista.
+5. L'agent inicialitza el pla amb `python3 scripts/continuity.py init` i concreta
+   els criteris del primer increment. En una sessió nova, escriu «Reprèn el projecte»:
+   recuperarà la següent acció amb `resume` i revisarà les evidències que hagin canviat.
 
 A Pi també pots escriure `/init`: el prompt local ja inclou aquestes instruccions.
 La descoberta de prompts requereix un projecte de confiança i que no estigui
@@ -40,6 +43,7 @@ control de versions. El motor d'IA s'instal·la i s'autentica fora del repositor
 python3 scripts/foundation.py status
 python3 scripts/foundation.py validate
 python3 scripts/routing.py validate
+python3 scripts/continuity.py validate
 python3 -m unittest discover -s tests -v
 ```
 
@@ -61,6 +65,8 @@ que la definició inicial és vàlida i s'han generat els documents.
 | Selecció de models | `routing/`, `scripts/routing.py` | Nivells, capacitats i decisions portables |
 | Subagents de Codex | `.codex/` | Luna, Terra i Astra; màxim dos subagents simultanis |
 | Decisions | `docs/adr/` | ADRs breus amb context i conseqüències |
+| Represa | `scripts/continuity.py`, `project/work.json` en productes | Pla, bloquejos, següent acció i memòria amb fonts |
+| Avaluacions | `scripts/evaluate.py`, `evals/` | Qualitat, reintents i ús observat; dades desconegudes explícites |
 | Operativa | `docs/templates/`, `docs/foundation/` | Specs, verificació, desplegament i actualitzacions |
 | CI | `.github/workflows/foundation.yml` | Tests de la base i integritat del material vendored |
 
@@ -68,6 +74,10 @@ Les skills incloses són Clean Code, Frontend Design, Web Design Guidelines,
 UX Heuristics, Security Audit de Cloudflare, Webapp Testing i Systematic Debugging.
 Dues referències de Superpowers resolen les dependències de depuració. React Best
 Practices i Web Performance consten com a opcionals, **no instal·lades**.
+
+La v0.3 inclou un [pilot real documentat](evals/pilot/README.md): Terra implementa,
+Luna recupera el context en una sessió nova i el recorregut es comprova al navegador.
+Les mètriques inclouen un primer intent fallit; no s'hi atribueixen estalvis sense baseline.
 
 ## Límits d'aquesta primera versió
 
@@ -84,5 +94,6 @@ Practices i Web Performance consten com a opcionals, **no instal·lades**.
 
 Consulta [l'arquitectura](docs/foundation/architecture.md),
 [la selecció de models](docs/foundation/model-routing.md),
+[la represa entre sessions](docs/foundation/continuity.md),
 [el manteniment de skills](docs/foundation/skills.md) i
 [les actualitzacions de la plantilla](docs/foundation/updating.md).

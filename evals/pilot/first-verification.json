@@ -1,0 +1,43 @@
+{
+  "browser": "151.0.7922.34",
+  "checks": [
+    {
+      "name": "Keyboard skip link has visible focus",
+      "passed": true
+    },
+    {
+      "name": "Services and contact navigation work",
+      "passed": true
+    },
+    {
+      "name": "Empty form rejects submission and focuses the first error",
+      "passed": true
+    },
+    {
+      "name": "Invalid email rejects submission",
+      "passed": true
+    },
+    {
+      "detail": "The expression evaluated to a falsy value:\n\n  assert.ok(await result.isHidden())\n",
+      "name": "Whitespace-only name is rejected",
+      "passed": false
+    },
+    {
+      "name": "Valid request renders selected service as local summary",
+      "passed": true
+    },
+    {
+      "name": "Repeated submission does not duplicate the summary",
+      "passed": true
+    },
+    {
+      "name": "390px viewport has no horizontal overflow",
+      "passed": true
+    },
+    {
+      "name": "No external requests or JavaScript errors",
+      "passed": true
+    }
+  ],
+  "site_sha256": "c71572ad3f2a367d9d9d6d92d52c325fa6f033081133fb0b950b43ab9b05ce04"
+}

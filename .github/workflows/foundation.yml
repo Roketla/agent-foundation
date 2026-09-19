@@ -29,3 +29,9 @@ jobs:
         run: python scripts/foundation.py validate
       - name: Política de models i configuració nativa de Codex
         run: python scripts/routing.py validate
+      - name: Pla i memòria verificable
+        run: python scripts/continuity.py validate
+      - name: Integritat de les evidències del pilot
+        run: |
+          python scripts/continuity.py --root evals/pilot/corporate validate
+          python scripts/evaluate.py report --input evals/pilot/records.json > /dev/null
