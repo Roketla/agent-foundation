@@ -11,7 +11,10 @@
 
 ## Treball eficient
 
-- Un agent principal per defecte. Delega només tasques independents quan el motor i les instruccions de la sessió ho permetin i l'estalvi ho justifiqui.
+- Un agent principal per defecte. Per feina independent on delegar aporti valor, delega segons `agents/orchestrator.md` i `routing/policy.json`, sempre que la sessió ho permeti.
+- Abans de delegar, observa models i capacitats de la sessió i executa `scripts/routing.py route` amb l'inventari i la tasca. No inventis canvis de model, permisos o subagents.
+- Usa `light` per feina clara de baix risc, `standard` per implementació habitual i `deep` per risc alt o ambigüitat. A Codex: Luna / Terra / Astra. En altres motors usa una correspondència explícita, sense deduir capacitats dels noms comercials.
+- Passa només objectiu, rutes, acceptació i context necessari. Si l'eina permet controlar l'historial, prefereix context nou amb model/esforç explícits: copiar tota la conversa pot heretar el model principal.
 - No obris tot `docs/`, `vendor/` o totes les skills alhora. Cerca primer; llegeix fitxers concrets.
 - Consulta `skills/catalog.json` només per escollir una skill. Els adaptadors de `.agents/skills/` indiquen quan carregar cada font.
 - No facis refactoritzacions alienes a l'encàrrec ni afegeixis dependències sense necessitat.
@@ -31,6 +34,7 @@
 ```sh
 python3 scripts/foundation.py status
 python3 scripts/foundation.py validate
+python3 scripts/routing.py validate
 python3 -m unittest discover -s tests -v
 ```
 

@@ -1,0 +1,15 @@
+{
+  "role": "implementer",
+  "complexity": "light",
+  "risk": "low",
+  "uncertainty": "low",
+  "independent": true,
+  "delegation_worthwhile": true,
+  "attempts": [],
+  "depth": 0,
+  "active_subagents": 0,
+  "objective": "Corregir l'etiqueta d'un botó segons el text aprovat.",
+  "paths": ["src/components/ContactButton.tsx"],
+  "acceptance": ["El botó mostra el text aprovat sense canviar el comportament."],
+  "context": "Exemple de format. Adapta les rutes i els criteris abans de delegar."
+}

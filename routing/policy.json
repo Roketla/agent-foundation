@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "tiers": ["light", "standard", "deep"],
+  "limits": {
+    "max_parallel_subagents": 2,
+    "max_delegation_depth": 1,
+    "max_attempts_per_task": 2,
+    "max_handoff_chars": 8000,
+    "max_result_chars": 6000,
+    "token_budget": null
+  },
+  "codex": {
+    "light": {"model": "gpt-5.6-luna", "effort": "low", "agent": "foundation_light"},
+    "standard": {"model": "gpt-5.6-terra", "effort": "medium", "agent": "foundation_standard"},
+    "deep": {"model": "gpt-6-astra", "effort": "high", "agent": "foundation_deep"}
+  }
+}

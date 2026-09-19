@@ -32,3 +32,10 @@ description: Define a new product from this template or resume incomplete onboar
 
 No carreguis altres skills durant l'entrevista. ready significa definició inicial
 vàlida i documents generats, no producte acabat. Identifica hipòtesis com a tals.
+
+En completar l'inici, identifica el motor amb la informació de la sessió. Consulta
+`docs/foundation/model-routing.md` abans de la primera delegació i prepara
+`.local/runtime.json` amb models, esforç actual i capacitats observades. No demanis
+informació que les eines ja exposen. Si falta una correspondència en un altre motor,
+registra-la com a pendent; no inventis equivalències ni bloquegis la generació del
+brief. La configuració local de Codex és un valor inicial, no prova del model actiu.

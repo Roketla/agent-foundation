@@ -39,8 +39,9 @@ atacant amb accés d'escriptura al repositori. Els canvis manuals es conserven.
 ## Portabilitat i recursos
 
 El motor d'IA proporciona conversa, model, eines i permisos. Codex i Pi comparteixen
-les instruccions i les skills descobertes a `.agents/skills/`. No es forcen models,
-proveïdors ni configuracions de confiança globals. Amb altres motors, l'entrada
+les instruccions i les skills descobertes a `.agents/skills/`. La configuració local
+de Codex proposa Terra com a principal i tres nivells de subagents; les preferències
+explícites de l'usuari prevalen. No es canvien proveïdors ni confiança globals. Amb altres motors, l'entrada
 explícita és llegir AGENTS.md i el SKILL.md necessari.
 
 Només les metadades dels adaptadors han de ser descobertes inicialment; fonts i

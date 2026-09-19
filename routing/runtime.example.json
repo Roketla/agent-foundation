@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "engine": "other",
+  "inventory_source": "unverified",
+  "current_model": "",
+  "current_effort": "",
+  "can_spawn": false,
+  "can_select_model": false,
+  "can_select_effort": false,
+  "max_parallel_subagents": 0,
+  "available_models": [],
+  "tiers": {
+    "light": [],
+    "standard": [],
+    "deep": []
+  }
+}

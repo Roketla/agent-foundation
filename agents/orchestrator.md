@@ -1,19 +1,42 @@
 # Coordinació
 
-L'agent principal conserva el context mínim: encàrrec, criteris d'acceptació, fitxers
-afectats i comprovacions. Resol tasques petites directament. Llegeix aquest document
-només quan la tasca necessiti coordinació.
+L'agent principal conserva l'encàrrec, criteris d'acceptació, fitxers afectats i
+comprovacions. Resol tasques petites directament. Llegeix aquest document quan
+la tasca necessiti coordinació.
 
-1. Confirma el resultat esperat amb la informació disponible, sense preguntes redundants.
-2. Divideix només si hi ha feina independent i el motor permet delegar. Per defecte,
-   cap subagent; com a recomanació de cost, comença amb un o dos com a màxim quan
-   siguin útils. Això no és un límit tècnic ni preval sobre les instruccions de sessió.
-3. Dona a cada subagent objectiu delimitat, fitxers autoritzats, evidència esperada i
-   condició d'aturada. No copiïs tota la conversa. Evita dos escriptors al mateix fitxer.
-4. Recull resums amb fitxers canviats, tests, riscos i bloquejos. Verifica la integració.
-5. Una revisió independent és pertinent per permisos, pagaments, migracions o canvis
-   amplis; no és un peatge per a correccions trivials. Si no hi ha subagents, fes
-   revisió local i identifica la limitació.
+1. Classifica complexitat, risc i incertesa. Permisos, pagaments, aïllament de clients
+   o migracions irreversibles tenen risc alt encara que el diff sigui petit. No
+   rebaixes el risc per aconseguir un model barat.
+2. Si delegar té sentit, llegeix `docs/foundation/model-routing.md`. Observa models,
+   esforços i eines de la sessió. Desa només informació no secreta a
+   `.local/runtime.json` amb el format de `routing/runtime.example.json`.
+   `inventory_source: session` exigeix observació real en aquesta sessió. Un catàleg
+   no demostra accés; no reutilitzis inventaris d'altres sessions sense verificar-los.
+3. Prepara `.local/task.json` com a `routing/task.example.json`, amb comptadors
+   actuals i intents fallits reals. Executa:
+   `python3 scripts/routing.py route --runtime .local/runtime.json --task .local/task.json`.
+   Conserva el mateix registre d'intents en reintentar. No canviïs el nom de la
+   tasca per esquivar el pressupost: cada intent fallit compta encara que canviï el model.
+4. Segueix l'acció retornada: `spawn`, `current`, `wait`, `handoff`, `blocked` o `stop`.
+   `spawn` és un pla: invoca l'eina real i espera'n el resultat. A Codex selecciona
+   l'agent natiu retornat, o model/esforç explícits si l'eina no ofereix rols. No
+   copiïs tot l'historial si això impedeix seleccionar el model. Comprova la selecció
+   efectiva a la resposta de l'eina; si no la pots verificar, indica-ho.
+5. Màxim dos subagents simultanis i una generació: els fills no creen més agents.
+   Actualitza l'estat dels que hi ha abans d'obrir-ne un altre. Evita dos escriptors
+   al mateix fitxer. Els revisors i investigadors no editen.
+6. Una fallada justificada pot escalar de nivell; dues temptatives fallides aturen
+   els reintents automàtics i requereixen revisar la causa. Un error de permisos,
+   una API caiguda o requisits contradictoris no es resolen canviant de model.
+7. Recull resums amb evidència, fitxers, tests i bloquejos, i verifica la integració.
+   No repeteixis tot l'anàlisi del fill. Demana revisió independent per canvis de
+   risc elevat quan sigui útil i possible, no per a cada correcció trivial.
 
-No simulis costos mesurats. Registra tokens/durada només quan el motor els proporcioni.
-No mantinguis agents en bucles de supervisió sense una necessitat concreta.
+Codex imposa la concurrència configurada quan es carrega la configuració del projecte.
+El router comprova intents, profunditat i context amb les dades que li passes; el
+protocol exigeix usar-lo, però no intercepta crides que el saltin. No hi ha un límit
+dur de tokens, euros o subscripció. Les polítiques del motor i les instruccions
+explícites de l'usuari prevalen.
+
+Registra tokens/durada només quan el motor els proporcioni. No simulis costos ni
+mantinguis agents en bucles de supervisió sense una necessitat concreta.

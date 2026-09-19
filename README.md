@@ -2,7 +2,8 @@
 
 Plantilla privada per començar webs corporatives, ecommerce i SaaS amb agents d'IA.
 Inclou una entrevista inicial que es pot reprendre, skills seleccionades, perfils,
-ADRs i validació automàtica. No imposa framework, proveïdor ni model d'IA.
+ADRs i validació automàtica. No imposa framework ni proveïdor; proposa una
+configuració editable de models per a Codex.
 
 ## Com començar un projecte
 
@@ -38,6 +39,7 @@ control de versions. El motor d'IA s'instal·la i s'autentica fora del repositor
 ```sh
 python3 scripts/foundation.py status
 python3 scripts/foundation.py validate
+python3 scripts/routing.py validate
 python3 -m unittest discover -s tests -v
 ```
 
@@ -56,6 +58,8 @@ que la definició inicial és vàlida i s'han generat els documents.
 | Fonts originals | `vendor/` | Versions fixades, dependències i llicències disponibles |
 | Catàleg i integritat | `skills/catalog.json`, `skills/lock.json` | Procedència, opcions i SHA-256 |
 | Rols d'agent | `agents/` | Coordinació, implementació i revisió sota demanda |
+| Selecció de models | `routing/`, `scripts/routing.py` | Nivells, capacitats i decisions portables |
+| Subagents de Codex | `.codex/` | Luna, Terra i Astra; màxim dos subagents simultanis |
 | Decisions | `docs/adr/` | ADRs breus amb context i conseqüències |
 | Operativa | `docs/templates/`, `docs/foundation/` | Specs, verificació, desplegament i actualitzacions |
 | CI | `.github/workflows/foundation.yml` | Tests de la base i integritat del material vendored |
@@ -69,7 +73,8 @@ Practices i Web Performance consten com a opcionals, **no instal·lades**.
 
 - Els perfils orienten la definició i els controls; no són aplicacions ja implementades.
 - Els rols són instruccions portables. El motor aporta execució, permisos i subagents.
-  No hi ha un runtime d'orquestració propi ni un límit de tokens imposat per codi.
+  Codex té configuració nativa de models i concurrència; el router portable comprova
+  les decisions abans de delegar. No hi ha un límit de tokens imposat per codi.
 - La CI comprova foundation. Cada producte ha d'afegir els seus tests, compilació,
   secrets scanning i controls de dependències segons el stack escollit.
 - No s'ha executat una auditoria de Cloudflare. La reproducció de vulnerabilitats
@@ -78,5 +83,6 @@ Practices i Web Performance consten com a opcionals, **no instal·lades**.
   `THIRD_PARTY_NOTICES.md`. Les adaptacions locals són explícites als adaptadors.
 
 Consulta [l'arquitectura](docs/foundation/architecture.md),
+[la selecció de models](docs/foundation/model-routing.md),
 [el manteniment de skills](docs/foundation/skills.md) i
 [les actualitzacions de la plantilla](docs/foundation/updating.md).
