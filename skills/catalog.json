@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "skills": [
+    {
+      "name": "clean-code",
+      "installed": true,
+      "role": "base",
+      "source": "vendor/skills/clean-code",
+      "adapter": ".agents/skills/clean-code",
+      "repository": "https://github.com/btseee/clean-code-skills",
+      "ref": "5b882c1b377f81371f2d46fb728d6836a71c9e3c",
+      "upstream_path": "skills/clean-code",
+      "license": "MIT"
+    },
+    {
+      "name": "frontend-design",
+      "installed": true,
+      "role": "base",
+      "source": "vendor/skills/frontend-design",
+      "adapter": ".agents/skills/frontend-design",
+      "repository": "https://github.com/anthropics/skills",
+      "ref": "34040c9c568585f6929bedeaad110ad08f079624",
+      "upstream_path": "skills/frontend-design",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "web-design-guidelines",
+      "installed": true,
+      "role": "base",
+      "source": "vendor/skills/web-design-guidelines",
+      "adapter": ".agents/skills/web-design-guidelines",
+      "repository": "https://github.com/vercel-labs/agent-skills",
+      "ref": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "upstream_path": "skills/web-design-guidelines",
+      "license": "MIT declared in upstream README"
+    },
+    {
+      "name": "ux-heuristics",
+      "installed": true,
+      "role": "base",
+      "source": "vendor/skills/ux-heuristics",
+      "adapter": ".agents/skills/ux-heuristics",
+      "repository": "https://github.com/wondelai/skills",
+      "ref": "c172996495bed0fcd26896a9416b2093fd7073f0",
+      "upstream_path": "ux-heuristics",
+      "license": "MIT"
+    },
+    {
+      "name": "security-audit",
+      "installed": true,
+      "role": "base",
+      "source": "vendor/skills/security-audit",
+      "adapter": ".agents/skills/security-audit",
+      "repository": "https://github.com/cloudflare/security-audit-skill",
+      "ref": "c1c8a8c1471069fb0e188eeaff69b8e8db6564a8",
+      "upstream_path": "skills/security-audit",
+      "license": "MIT"
+    },
+    {
+      "name": "webapp-testing",
+      "installed": true,
+      "role": "base",
+      "source": "vendor/skills/webapp-testing",
+      "adapter": ".agents/skills/webapp-testing",
+      "repository": "https://github.com/anthropics/skills",
+      "ref": "34040c9c568585f6929bedeaad110ad08f079624",
+      "upstream_path": "skills/webapp-testing",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "systematic-debugging",
+      "installed": true,
+      "role": "base",
+      "source": "vendor/skills/systematic-debugging",
+      "adapter": ".agents/skills/systematic-debugging",
+      "repository": "https://github.com/obra/superpowers",
+      "ref": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+      "upstream_path": "skills/systematic-debugging",
+      "license": "MIT"
+    },
+    {
+      "name": "test-driven-development",
+      "installed": true,
+      "role": "supporting-reference",
+      "source": "vendor/skills/test-driven-development",
+      "adapter": null,
+      "repository": "https://github.com/obra/superpowers",
+      "ref": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+      "upstream_path": "skills/test-driven-development",
+      "license": "MIT"
+    },
+    {
+      "name": "verification-before-completion",
+      "installed": true,
+      "role": "supporting-reference",
+      "source": "vendor/skills/verification-before-completion",
+      "adapter": null,
+      "repository": "https://github.com/obra/superpowers",
+      "ref": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+      "upstream_path": "skills/verification-before-completion",
+      "license": "MIT"
+    },
+    {
+      "name": "react-best-practices",
+      "installed": false,
+      "role": "optional",
+      "repository": "https://github.com/vercel-labs/agent-skills",
+      "ref": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "upstream_path": "skills/react-best-practices",
+      "when": "Només per projectes React o Next.js; revisar font i dependències abans d’instal·lar."
+    },
+    {
+      "name": "web-perf",
+      "installed": false,
+      "role": "optional",
+      "repository": "https://github.com/cloudflare/skills",
+      "ref": "b052c32bab7dd493513260228a36c88294f343f1",
+      "upstream_path": "skills/web-perf",
+      "when": "Quan hi hagi una tasca de rendiment web i eines de mesura disponibles."
+    }
+  ],
+  "references": [
+    {
+      "name": "web-interface-guidelines",
+      "repository": "https://github.com/vercel-labs/web-interface-guidelines",
+      "ref": "e3d624baaf29dc1fc645aff3e38f03e564d2d6b1",
+      "upstream_path": "command.md",
+      "source": "vendor/references/web-interface-guidelines/command.md",
+      "license": "MIT"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "saas",
+  "label": "SaaS",
+  "questions": ["Quins usuaris, organitzacions i rols hi haurà?", "Quin problema resol el primer flux complet?", "Hi haurà subscripcions, límits d'ús o dades sensibles?"],
+  "checks": ["Autorització al servidor per cada recurs", "Aïllament entre organitzacions si hi ha multitenència", "Proves de permisos positius i negatius", "Migracions, restauració i observabilitat del flux crític"],
+  "risks": ["Escalada de privilegis i accés entre clients", "Sessions, invitacions i recuperació de compte", "Facturació i esborrat o exportació de dades"]
+}

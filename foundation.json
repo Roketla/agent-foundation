@@ -1,0 +1,8 @@
+{
+  "name": "agent-foundation",
+  "version": "0.1.0",
+  "schema_version": 1,
+  "upstream": "https://github.com/Roketla/agent-foundation",
+  "runtime": "agent-provided",
+  "onboarding": "python3 scripts/foundation.py status"
+}

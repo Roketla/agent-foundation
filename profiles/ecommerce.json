@@ -1,0 +1,7 @@
+{
+  "id": "ecommerce",
+  "label": "Comerç electrònic",
+  "questions": ["Quins productes, mercats, monedes i idiomes?", "Quin proveïdor gestionarà pagaments, impostos i enviaments?", "Com es gestionen estoc, devolucions i correus transaccionals?"],
+  "checks": ["Flux de compra complet amb errors i cancel·lació", "Preus i imports calculats i validats al servidor", "Webhooks autenticats i operacions idempotents", "Estoc i reintents de pagament amb proves d'integració"],
+  "risks": ["No emmagatzemar dades de targeta: delegar-les al proveïdor escollit", "Accés a dades de clients i comandes", "Condicions de venda, retenció i fiscalitat pendents de validar pel negoci"]
+}

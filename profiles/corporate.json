@@ -1,0 +1,7 @@
+{
+  "id": "corporate",
+  "label": "Web corporativa",
+  "questions": ["Quines pàgines i quina acció principal ha de facilitar?", "Qui editarà els continguts i en quins idiomes?", "Hi haurà formularis, analítica o contingut personalitzat?"],
+  "checks": ["Navegació i contingut accessibles amb teclat", "Metadades, sitemap i indexació coherents", "Formularis amb validació, protecció antiabús i estats d'error", "Objectius de rendiment definits per les pàgines principals"],
+  "risks": ["Dades de contacte i consentiments si escau", "Spam i serveis externs", "Contingut o credencials exposats al client"]
+}
