@@ -84,6 +84,52 @@ de consultar. El handoff només conté objectiu, rol, rutes, acceptació i conte
 no copiïs transcripcions, secrets o fitxers sencers sense necessitat. El coordinador
 aplica la decisió amb les eines reals i comprova el resultat de l'execució.
 
+## Cursor: models Grok
+
+`routing/policy.json` té un bloc `cursor`, paral·lel a `codex`. L'orquestrador d'aquest
+projecte, quan treballa a Cursor, tria només models Grok:
+
+| Nivell | Cursor | Esforç | Treball |
+|---|---|---|---|
+| light | cursor-grok-4.6-high-fast | high | Cerca delimitada i canvis petits. No hi ha un Grok amb esforç baix al catàleg de subagents observat; no es rebaixa el nivell en silenci. |
+| standard | cursor-grok-4.6-high-fast | high | Implementació habitual |
+| deep | grok-4.7-xhigh | xhigh | Risc alt, arquitectura i ambigüitat |
+
+`CURSOR_CAPACITY` a `scripts/routing.py` és la classificació revisada d'aquests dos
+slugs. Un Grok nou s'afegeix allà i als tests, no només al JSON. Light i standard
+comparteixen model perquè el catàleg de subagents de Cursor observat en aquesta
+sessió només exposa `cursor-grok-4.6-high-fast` i `grok-4.7-xhigh`. L'esforç va
+lligat al slug; no s'inventa un esforç `low` que l'eina no pot aplicar.
+
+Amb `engine: cursor`, els nivells surten de la política. El runtime no els pot
+reescriure. `.cursor/model-routing.json` i `.cursor/agents/foundation_*.md` es
+generen amb `render-cursor` i `validate` en comprova la deriva. En delegar, passa
+`selection.model` a l'eina de subagents de Cursor. Si el model no és a l'inventari
+observat de la sessió, la ruta queda `blocked`.
+
+## Claude Code: Sonnet orquestra
+
+`routing/policy.json` té un bloc `claude`. La sessió principal de Claude Code és
+l'orquestrador i va amb Sonnet; delega en subagents amb model explícit:
+
+| Nivell | Model | Esforç | Treball |
+|---|---|---|---|
+| light | claude-haiku-5-5 | low | Cerca delimitada, extracció, documentació i canvis petits |
+| standard | claude-sonnet-5-5 | medium | Funcionalitats, integracions, tests i depuració habitual |
+| deep | claude-opus-5-5 | high | Arquitectura, risc alt, ambigüitat i revisions |
+
+`role_floors` (a policy, per a tots els motors) fixa un mínim per rol: l'implementador
+pot ser light, l'investigador mai baixa de standard i el revisor sempre és deep. El
+risc i la incertesa segueixen pujant el nivell per sobre del mínim. Pagaments, Square,
+dades de clients i migracions són risc alt encara que el diff sigui petit.
+
+`.claude/settings.json` només fixa `model` al valor standard (Sonnet) i
+`.claude/agents/foundation_*.md` porta el `model` i l'`effort` de cada nivell. Es
+generen amb `render-claude` i `validate` en comprova la deriva. No hi ha permisos ni
+hooks generats. `CLAUDE_CAPACITY` a `scripts/routing.py` és la classificació revisada:
+un model nou s'hi afegeix, amb tests, no només al JSON. Comprova a la sessió que
+l'`effort` de la capçalera s'aplica; si no es pot verificar, indica-ho.
+
 ## Pi i altres motors
 
 Pi comparteix AGENTS.md i les skills, però no incorpora subagents. Per defecte,

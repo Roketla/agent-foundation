@@ -1,4 +1,4 @@
-# 0004 — Perfils library i service
+# 0006 — Perfils library i service
 
 Estat: proposat. Data: 2026-10-27.
 
@@ -19,6 +19,6 @@ comprovacions d'SEO o de multitenència que no s'apliquen) i un perfil genèric
 «altres» (no concreta riscos ni comprovacions).
 
 Conseqüències: projectes nous i existents poden triar-los en l'entrevista. Un projecte
-híbrid continua escollint el perfil dominant. La versió de la base puja a 0.4.0 perquè
+híbrid continua escollint el perfil dominant. Els perfils arriben a la base a partir de la 0.4.0 perquè
 els projectes derivats puguin saber quan els hi apareixen. Els perfils són una base
 editable: cal revisar-los amb el primer projecte real que els faci servir.

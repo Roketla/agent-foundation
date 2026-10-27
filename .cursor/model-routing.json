@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "engine": "cursor",
+  "tiers": {
+    "light": {
+      "model": "cursor-grok-4.6-high-fast",
+      "effort": "high",
+      "agent": "foundation_light"
+    },
+    "standard": {
+      "model": "cursor-grok-4.6-high-fast",
+      "effort": "high",
+      "agent": "foundation_standard"
+    },
+    "deep": {
+      "model": "grok-4.7-xhigh",
+      "effort": "xhigh",
+      "agent": "foundation_deep"
+    }
+  }
+}
