@@ -1,6 +1,6 @@
 # agent-foundation
 
-Plantilla privada per començar webs corporatives, ecommerce i SaaS amb agents d'IA.
+Plantilla privada per començar webs corporatives, ecommerce, SaaS, llibreries compartides i serveis amb agents d'IA.
 Inclou una entrevista inicial que es pot reprendre, skills seleccionades, perfils,
 ADRs i validació automàtica. No imposa framework ni proveïdor; proposa una
 configuració editable de models per a Codex.
@@ -57,7 +57,7 @@ que la definició inicial és vàlida i s'han generat els documents.
 |---|---|---|
 | Instruccions comunes | `AGENTS.md` | Entrada curta i lectura selectiva |
 | Entrevista | `.agents/skills/project-intake/` | Preguntes, represa i generació |
-| Perfils | `profiles/` | Corporate, ecommerce i SaaS |
+| Perfils | `profiles/` | Corporate, ecommerce, SaaS, llibreria i servei |
 | Skills | `.agents/skills/` | 7 adaptadors, activats segons la tasca |
 | Fonts originals | `vendor/` | Versions fixades, dependències i llicències disponibles |
 | Catàleg i integritat | `skills/catalog.json`, `skills/lock.json` | Procedència, opcions i SHA-256 |

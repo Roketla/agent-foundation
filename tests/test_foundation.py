@@ -55,7 +55,7 @@ class OnboardingTests(unittest.TestCase):
         self.assertEqual(data["audience"], "Cooperatives")
 
     def test_all_profiles_generate_their_own_controls(self):
-        for profile in ("corporate", "ecommerce", "saas"):
+        for profile in foundation.PROFILES:
             with self.subTest(profile=profile):
                 self.complete(profile)
                 result = foundation.initialize(self.root, refresh=True)
@@ -64,6 +64,10 @@ class OnboardingTests(unittest.TestCase):
                 profile_data = foundation.read_json(self.root / f"profiles/{profile}.json")
                 self.assertIn(profile_data["checks"][0], quality)
                 self.assertIn("Estudi Blau", (self.root / "docs/project/brief.md").read_text())
+
+    def test_every_profile_file_is_registered(self):
+        files = sorted(path.stem for path in (self.root / "profiles").glob("*.json"))
+        self.assertEqual(files, sorted(foundation.PROFILES))
 
     def test_initialization_is_idempotent(self):
         self.complete()

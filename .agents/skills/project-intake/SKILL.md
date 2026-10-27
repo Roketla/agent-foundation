@@ -10,7 +10,7 @@ description: Define a new product from this template or resume incomplete onboar
 2. Recupera dades ja conegudes. Pregunta com a màxim 2–3 coses per torn, en l'idioma
    de l'usuari: què vol desenvolupar i per a qui; MVP i límits; criteris d'acceptació
    i idiomes. No tornis a preguntar res resolt a la conversa.
-3. Proposa corporate, ecommerce o saas i llegeix només el perfil triat a profiles/.
+3. Proposa corporate, ecommerce, saas, library (paquet compartit) o service (API, worker o integració) i llegeix només el perfil triat a profiles/.
    Per a un híbrid, escull el dominant i registra extensions al MVP/restriccions.
 4. Pregunta només detalls del perfil que afectin el primer increment. Identifica
    stack/hosting existents, integracions, dades sensibles i restriccions. Stack i
