@@ -1,0 +1,7 @@
+{
+  "id": "library",
+  "label": "Llibreria o paquet compartit",
+  "questions": ["Quins projectes consumeixen el paquet, en quins entorns s'executa i quina API pública ha de ser estable?", "Com es versiona i es publica (tags, registre privat) i qui aprova cada versió?", "Quin comportament comú (preus, filtres, validacions) no pot canviar sense avisar els consumidors?"],
+  "checks": ["Tests de contracte de l'API pública i de fixtures representatives de cada consumidor", "Semver explícit: què és un canvi trencador, també de comportament", "Smoke d'instal·lació com a consumidor (empaquetar, instal·lar i importar)", "Changelog i efecte per consumidor descrits a cada PR"],
+  "risks": ["Un canvi de comportament silenciós trenca diversos consumidors alhora", "Secrets o tokens als logs, errors o artefactes publicats", "Accés privat al paquet (deploy keys, tokens) i versions mutables o sense lock"]
+}

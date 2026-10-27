@@ -10,6 +10,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+PROFILES = ("corporate", "ecommerce", "saas", "library", "service")
 STRINGS = {"name", "profile", "purpose", "audience", "stack", "hosting", "data_sensitivity"}
 LISTS = {"mvp", "out_of_scope", "acceptance", "languages", "integrations", "constraints", "open_questions"}
 FIELDS = STRINGS | LISTS | {"schema_version"}
@@ -86,8 +87,8 @@ def load_brief(root: Path) -> dict:
     data = read_json(local(root, "project/brief.json"))
     check_fields(data)
     profile = data["profile"]
-    if profile and profile not in ("corporate", "ecommerce", "saas"):
-        raise FoundationError("Perfil desconegut: corporate, ecommerce o saas.")
+    if profile and profile not in PROFILES:
+        raise FoundationError(f"Perfil desconegut: {', '.join(PROFILES)}.")
     return data
 
 
@@ -121,7 +122,7 @@ def configure(root: Path, answers: dict) -> dict:
     load_state(root)
     data = load_brief(root) | answers
     check_fields(data)
-    if data["profile"] and data["profile"] not in ("corporate", "ecommerce", "saas"):
+    if data["profile"] and data["profile"] not in PROFILES:
         raise FoundationError("Perfil desconegut.")
     write_atomic(local(root, "project/brief.json"), encoded(data))
     return status(root)
@@ -190,7 +191,7 @@ def verify_skills(root: Path) -> int:
 
 def validate(root: Path) -> dict:
     current = status(root)
-    for profile in ("corporate", "ecommerce", "saas"):
+    for profile in PROFILES:
         data = read_json(local(root, f"profiles/{profile}.json"))
         if data.get("id") != profile or not all(data.get(k) for k in ("label", "questions", "checks", "risks")):
             raise FoundationError(f"Perfil invàlid: {profile}")

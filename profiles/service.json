@@ -1,0 +1,7 @@
+{
+  "id": "service",
+  "label": "Servei, API o integració",
+  "questions": ["Quins clients i sistemes externs crida o serveix, i quin contracte d'API exposa?", "On s'executa (Worker, contenidor, tasca programada), com es desplega i com es fa rollback?", "Quines dades, secrets i serveis de tercers toca, i quins límits o costos tenen?"],
+  "checks": ["Contracte d'API versionat, amb validació d'entrada i errors coherents al servidor", "Autenticació i autorització a cada endpoint", "Webhooks autenticats i operacions idempotents davant reintents", "Observabilitat del flux crític: logs sense secrets, mètriques i alertes", "Proves amb sandbox o dobles de test, mai amb producció"],
+  "risks": ["Secrets o dades personals exposats a logs, errors o respostes", "Efectes duplicats per reintents o webhooks repetits", "Canvis de contracte que trenquen clients existents", "Límits, timeouts i costos dels serveis externs"]
+}
