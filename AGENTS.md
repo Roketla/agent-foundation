@@ -14,7 +14,8 @@
 
 - Un agent principal per defecte. Per feina independent on delegar aporti valor, delega segons `agents/orchestrator.md` i `routing/policy.json`, sempre que la sessió ho permeti.
 - Abans de delegar, observa models i capacitats de la sessió i executa `scripts/routing.py route` amb l'inventari i la tasca. No inventis canvis de model, permisos o subagents.
-- Usa `light` per feina clara de baix risc, `standard` per implementació habitual i `deep` per risc alt o ambigüitat. A Codex: Luna / Terra / Astra. En altres motors usa una correspondència explícita, sense deduir capacitats dels noms comercials.
+- A Claude Code, la sessió principal és Sonnet i orquestra: delega als subagents `foundation_light` (Haiku), `foundation_standard` (Sonnet) i `foundation_deep` (Opus) de `.claude/agents/`. El revisor és sempre `deep`. Detall a `docs/foundation/model-routing.md`.
+- Usa `light` per feina clara de baix risc, `standard` per implementació habitual i `deep` per risc alt o ambigüitat. A Claude: Haiku / Sonnet / Opus. A Codex: Luna / Terra / Astra. A Cursor: els models Grok de `routing/policy.json` (`cursor`). En altres motors usa una correspondència explícita, sense deduir capacitats dels noms comercials.
 - Passa només objectiu, rutes, acceptació i context necessari. Si l'eina permet controlar l'historial, prefereix context nou amb model/esforç explícits: copiar tota la conversa pot heretar el model principal.
 - No obris tot `docs/`, `vendor/` o totes les skills alhora. Cerca primer; llegeix fitxers concrets.
 - Per usar un CLI de la plantilla, consulta `--help` i el seu document de format. Llegeix-ne la implementació només per modificar-la o investigar un error.

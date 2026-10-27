@@ -19,7 +19,10 @@ la tasca necessiti coordinació.
    tasca per esquivar el pressupost: cada intent fallit compta encara que canviï el model.
 4. Segueix l'acció retornada: `spawn`, `current`, `wait`, `handoff`, `blocked` o `stop`.
    `spawn` és un pla: invoca l'eina real i espera'n el resultat. A Codex selecciona
-   l'agent natiu retornat, o model/esforç explícits si l'eina no ofereix rols. No
+   l'agent natiu retornat, o model/esforç explícits si l'eina no ofereix rols. A
+   Cursor, amb `engine: cursor`, usa el `model` Grok de `selection` (els slugs de
+   `policy.cursor` i `.cursor/model-routing.json`). No canviïs a un model que no
+   sigui Grok si la política d'aquest projecte ha demanat Grok. No
    copiïs tot l'historial si això impedeix seleccionar el model. Comprova la selecció
    efectiva a la resposta de l'eina; si no la pots verificar, indica-ho.
 5. Màxim dos subagents simultanis i una generació: els fills no creen més agents.

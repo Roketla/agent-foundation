@@ -124,6 +124,61 @@ class RoutingTests(unittest.TestCase):
         self.assertEqual(result["handoff"]["acceptance"], self.task["acceptance"])
         self.assertEqual(self.route(context="x" * 8000)["action"], "blocked")
 
+    def test_cursor_selects_grok_by_tier(self):
+        self.runtime.update(engine="cursor", current_model="cursor-grok-4.6-high-fast", current_effort="high",
+            available_models=[{"id": "cursor-grok-4.6-high-fast", "efforts": ["high"]},
+                              {"id": "grok-4.7-xhigh", "efforts": ["xhigh"]}])
+        self.assertEqual(self.route()["selection"]["model"], "cursor-grok-4.6-high-fast")
+        self.assertEqual(self.route()["selection"]["effort"], "high")
+        deep = self.route(risk="high")
+        self.assertEqual(deep["tier"], "deep")
+        self.assertEqual(deep["selection"]["model"], "grok-4.7-xhigh")
+        self.assertEqual(deep["selection"]["effort"], "xhigh")
+
+    def test_cursor_mapping_cannot_be_overridden_in_runtime(self):
+        self.runtime.update(engine="cursor", tiers={"light": [], "standard": [], "deep": []})
+        with self.assertRaises(r.RoutingError):
+            self.route()
+
+    def test_cursor_does_not_silently_downgrade_when_deep_grok_is_missing(self):
+        self.runtime.update(engine="cursor", current_model="cursor-grok-4.6-high-fast", current_effort="high",
+            available_models=[{"id": "cursor-grok-4.6-high-fast", "efforts": ["high"]}])
+        self.assertEqual(self.route(risk="high")["action"], "blocked")
+
+    def claude_runtime(self, models=None):
+        models = models or {"claude-haiku-5-5": "low", "claude-sonnet-5-5": "medium", "claude-opus-5-5": "high"}
+        self.runtime.update(engine="claude", current_model="claude-sonnet-5-5", current_effort="medium",
+                            available_models=[{"id": m, "efforts": [e]} for m, e in models.items()])
+        self.runtime.pop("tiers", None)
+
+    def test_claude_selects_haiku_sonnet_opus_by_tier(self):
+        self.claude_runtime()
+        self.assertEqual(self.route()["selection"]["model"], "claude-haiku-5-5")
+        self.assertEqual(self.route(complexity="standard")["selection"]["model"], "claude-sonnet-5-5")
+        self.assertEqual(self.route(risk="high")["selection"]["model"], "claude-opus-5-5")
+
+    def test_claude_orchestrator_works_directly_when_task_is_standard(self):
+        self.claude_runtime()
+        result = self.route(complexity="standard", independent=False)
+        self.assertEqual(result["action"], "current")
+        self.assertEqual(result["selection"]["model"], "claude-sonnet-5-5")
+
+    def test_claude_does_not_silently_downgrade_when_opus_is_missing(self):
+        self.claude_runtime({"claude-haiku-5-5": "low", "claude-sonnet-5-5": "medium"})
+        self.assertEqual(self.route(risk="high")["action"], "blocked")
+
+    def test_claude_mapping_cannot_be_overridden_in_runtime(self):
+        self.claude_runtime()
+        self.runtime["tiers"] = {"light": [], "standard": [], "deep": []}
+        with self.assertRaises(r.RoutingError):
+            self.route()
+
+    def test_reviewer_is_always_deep_and_researcher_at_least_standard(self):
+        self.claude_runtime()
+        self.assertEqual(self.route(role="reviewer")["selection"]["model"], "claude-opus-5-5")
+        self.assertEqual(self.route(role="researcher")["selection"]["model"], "claude-sonnet-5-5")
+        self.assertEqual(self.route(role="implementer")["selection"]["model"], "claude-haiku-5-5")
+
     def test_other_provider_uses_explicit_mapping_and_skips_unavailable_preference(self):
         self.runtime.update(engine="other", current_model="provider/balanced", available_models=[
             {"id": "provider/fast", "efforts": ["none"]}, {"id": "provider/balanced", "efforts": ["medium"]}],
@@ -185,7 +240,7 @@ class NativeConfigTests(unittest.TestCase):
         self.assertTrue(r.validate()["valid"])
 
     def test_no_permission_or_provider_overrides_are_generated(self):
-        files = r.codex_files(r.policy())
+        files = r.codex_files(r.policy()) | r.cursor_files(r.policy()) | r.claude_files(r.policy())
         for content in files.values():
             for key in ("sandbox_mode =", "approval_policy =", "model_provider =", "api_key"):
                 self.assertNotIn(key, content)
@@ -196,7 +251,7 @@ class NativeConfigTests(unittest.TestCase):
             (root / "routing").mkdir()
             p = r.policy()
             (root / "routing/policy.json").write_text(json.dumps(p))
-            for name, content in r.codex_files(p).items():
+            for name, content in (r.codex_files(p) | r.cursor_files(p) | r.claude_files(p)).items():
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(content)
@@ -205,6 +260,31 @@ class NativeConfigTests(unittest.TestCase):
             with self.assertRaises(r.RoutingError):
                 r.validate(root)
             p["limits"]["token_budget"] = 1000
+            (root / "routing/policy.json").write_text(json.dumps(p))
+            with self.assertRaises(r.RoutingError):
+                r.policy(root)
+
+    def test_claude_deep_tier_cannot_use_sonnet_and_floors_are_required(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "routing").mkdir()
+            p = r.policy()
+            p["claude"]["deep"]["model"] = "claude-sonnet-5-5"
+            (root / "routing/policy.json").write_text(json.dumps(p))
+            with self.assertRaises(r.RoutingError):
+                r.policy(root)
+            p = r.policy()
+            del p["role_floors"]["reviewer"]
+            (root / "routing/policy.json").write_text(json.dumps(p))
+            with self.assertRaises(r.RoutingError):
+                r.policy(root)
+
+    def test_cursor_deep_tier_cannot_use_the_standard_grok(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "routing").mkdir()
+            p = r.policy()
+            p["cursor"]["deep"]["model"] = "cursor-grok-4.6-high-fast"
             (root / "routing/policy.json").write_text(json.dumps(p))
             with self.assertRaises(r.RoutingError):
                 r.policy(root)

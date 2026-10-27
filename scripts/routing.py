@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable routing decisions and deterministic Codex configuration. No model calls."""
+"""Portable routing decisions and deterministic native agent configuration. No model calls."""
 from __future__ import annotations
 
 import argparse
@@ -13,7 +13,15 @@ EFFORT_ORDER = ("none", "minimal", "low", "medium", "high", "xhigh", "max", "ult
 EFFORTS = set(EFFORT_ORDER)
 # Reviewed capability ceilings for native schema v1; not a live model catalogue.
 CODEX_CAPACITY = {"gpt-5.6-luna": 0, "gpt-5.6-terra": 1, "gpt-5.6-sol": 1, "gpt-6-astra": 2}
+# Cursor subagent slugs observed for this project. Grok only; not a live catalogue.
+CURSOR_CAPACITY = {"cursor-grok-4.6-high-fast": 1, "grok-4.7-xhigh": 2}
+# Claude Code subagent models: Haiku light, Sonnet standard (and orchestrator), Opus deep.
+CLAUDE_CAPACITY = {"claude-haiku-5-5": 0, "claude-sonnet-5-5": 1, "claude-opus-5-5": 2}
 ROLES = {"researcher", "implementer", "reviewer"}
+NATIVE_ENGINES = ("codex", "cursor", "claude")
+DESCRIPTIONS = {"light": "Narrow, low-risk, well-specified work: lookup, extraction, documentation or small verified changes.",
+                "standard": "Bounded implementation, integration, tests and moderate debugging.",
+                "deep": "High-risk or ambiguous work, architecture and complex cross-component analysis. Not routine tasks."}
 
 
 class RoutingError(ValueError):
@@ -31,27 +39,35 @@ def policy(root: Path = ROOT) -> dict:
     p = read(root / "routing/policy.json")
     if p.get("schema_version") != 1 or p.get("tiers") != list(TIERS):
         raise RoutingError("Unsupported routing policy.")
-    if not isinstance(p.get("limits"), dict) or not isinstance(p.get("codex"), dict):
-        raise RoutingError("Policy limits and codex must be objects.")
+    if any(not isinstance(p.get(key), dict) for key in ("limits", "role_floors", "codex", "cursor", "claude")):
+        raise RoutingError("Policy limits, role_floors, codex, cursor and claude must be objects.")
+    if set(p["role_floors"]) != ROLES or any(floor not in TIERS for floor in p["role_floors"].values()):
+        raise RoutingError("role_floors must give every role a valid tier.")
     for key in ("max_parallel_subagents", "max_delegation_depth", "max_attempts_per_task", "max_handoff_chars", "max_result_chars"):
         if type(p.get("limits", {}).get(key)) is not int or p["limits"][key] < 1:
             raise RoutingError(f"Invalid limit: {key}")
     # A JSON setting cannot enforce paid usage. Do not silently accept pretend budgets.
     if p["limits"].get("token_budget") is not None:
         raise RoutingError("Hard token budgets need a runtime executor; this router does not enforce them.")
-    if set(p.get("codex", {})) != set(TIERS):
-        raise RoutingError("Codex mappings must cover all tiers.")
+    native_block(p["codex"], CODEX_CAPACITY, "Codex")
+    native_block(p["cursor"], CURSOR_CAPACITY, "Cursor")
+    native_block(p["claude"], CLAUDE_CAPACITY, "Claude")
+    return p
+
+
+def native_block(block: dict, capacity: dict, label: str) -> None:
+    if set(block) != set(TIERS):
+        raise RoutingError(f"{label} mappings must cover all tiers.")
     for tier in TIERS:
-        binding(p["codex"][tier])
-        value = p["codex"][tier]
-        if CODEX_CAPACITY.get(value["model"], -1) < TIERS.index(tier):
-            raise RoutingError("Model capacity does not meet the native tier. Review CODEX_CAPACITY before adding models.")
+        binding(block[tier])
+        value = block[tier]
+        if capacity.get(value["model"], -1) < TIERS.index(tier):
+            raise RoutingError("Model capacity does not meet the native tier. Review the capacity table before adding models.")
         minimum = ("low", "medium", "high")[TIERS.index(tier)]
         if EFFORT_ORDER.index(value["effort"]) < EFFORT_ORDER.index(minimum):
             raise RoutingError("Native effort is below the tier minimum.")
-        if p["codex"][tier].get("agent") != "foundation_" + tier:
+        if value.get("agent") != "foundation_" + tier:
             raise RoutingError("Unexpected native agent name.")
-    return p
 
 
 def binding(value: dict) -> None:
@@ -62,7 +78,7 @@ def binding(value: dict) -> None:
 
 
 def runtime(data: dict, p: dict) -> dict:
-    if data.get("schema_version") != 1 or data.get("engine") not in ("codex", "pi", "other"):
+    if data.get("schema_version") != 1 or data.get("engine") not in NATIVE_ENGINES + ("pi", "other"):
         raise RoutingError("Unsupported runtime schema or engine.")
     for key in ("can_spawn", "can_select_model", "can_select_effort"):
         if type(data.get(key)) is not bool:
@@ -87,11 +103,11 @@ def runtime(data: dict, p: dict) -> dict:
         if not isinstance(item.get("efforts"), list) or not item["efforts"] or any(not isinstance(e, str) or e not in EFFORTS for e in item["efforts"]):
             raise RoutingError("Every model must declare its supported reasoning efforts.")
     mappings = data.get("tiers")
-    if data["engine"] == "codex":
+    if data["engine"] in NATIVE_ENGINES:
         # Custom replacements belong in policy, and must regenerate native configs.
         if "tiers" in data:
-            raise RoutingError("Codex tiers come only from policy; omit runtime tiers.")
-        mappings = {tier: [p["codex"][tier]] for tier in TIERS}
+            raise RoutingError(f"{data['engine'].title()} tiers come only from policy; omit runtime tiers.")
+        mappings = {tier: [p[data["engine"]][tier]] for tier in TIERS}
     if not isinstance(mappings, dict) or set(mappings) != set(TIERS):
         raise RoutingError("Runtime mappings must cover light, standard and deep.")
     for choices in mappings.values():
@@ -125,8 +141,8 @@ def validate_task(task: dict) -> None:
         raise RoutingError("Context must be text.")
 
 
-def required_tier(task: dict) -> str:
-    level = TIERS.index(task["complexity"])
+def required_tier(task: dict, p: dict) -> str:
+    level = max(TIERS.index(task["complexity"]), TIERS.index(p["role_floors"][task["role"]]))
     level = max(level, {"low": 0, "medium": 1, "high": 2}[task["risk"]],
                 {"low": 0, "medium": 1, "high": 2}[task["uncertainty"]])
     if task["attempts"]:
@@ -155,7 +171,7 @@ def route(p: dict, data: dict, task: dict) -> dict:
     rt = runtime(data, p)
     validate_task(task)
     limits = p["limits"]
-    tier = required_tier(task)
+    tier = required_tier(task, p)
     result = {"tier": tier, "role": task["role"], "engine": rt["engine"], "executed": False}
     def finish(action, reason, **fields):
         return result | {"action": action, "reason": reason} | fields
@@ -202,6 +218,17 @@ def route(p: dict, data: dict, task: dict) -> dict:
     return finish("handoff", "Required model is available but must be selected explicitly in a suitable session.", selection=choice)
 
 
+def instructions(p: dict, suffix: str = "") -> str:
+    return (f"Read AGENTS.md and the assigned handoff only. Execute its researcher, implementer or reviewer role. Researchers and reviewers do not edit files. Do not delegate further. Preserve scope and session permissions. Return concise evidence, changed paths, checks actually run and blockers within {p['limits']['max_result_chars']} characters. If the task exceeds your tier, return a specific escalation reason instead of guessing. Do not repeat a failed approach. Never claim a model switch or test that did not happen." + suffix)
+
+
+def agent_markdown(p: dict, engine: str, tier: str, suffix: str = "") -> str:
+    value = p[engine][tier]
+    return "\n".join(("---", f"name: {json.dumps(value['agent'])}", f"model: {json.dumps(value['model'])}",
+                      f"effort: {json.dumps(value['effort'])}", f"description: {json.dumps(DESCRIPTIONS[tier], ensure_ascii=False)}",
+                      "---", "", instructions(p, suffix), ""))
+
+
 def codex_files(p: dict) -> dict[str, str]:
     quote = lambda s: json.dumps(s, ensure_ascii=False)
     standard = p["codex"]["standard"]
@@ -216,26 +243,41 @@ default_subagent_model = {quote(standard['model'])}
 default_subagent_reasoning_effort = {quote(standard['effort'])}
 '''
     output = {".codex/config.toml": config}
-    descriptions = {"light": "Narrow, low-risk, well-specified work: lookup, extraction, documentation or small verified changes.",
-                    "standard": "Bounded implementation, integration, tests and moderate debugging.",
-                    "deep": "High-risk or ambiguous work, architecture and complex cross-component analysis. Not routine tasks."}
     for tier in TIERS:
         value = p["codex"][tier]
-        instructions = f"Read AGENTS.md and the assigned handoff only. Execute its researcher, implementer or reviewer role. Researchers and reviewers do not edit files. Do not delegate further. Preserve scope and session permissions. Return concise evidence, changed paths, checks actually run and blockers within {p['limits']['max_result_chars']} characters. If the task exceeds your tier, return a specific escalation reason instead of guessing. Do not repeat a failed approach. Never claim a model switch or test that did not happen."
         output[f".codex/agents/{value['agent']}.toml"] = "\n".join((
             "# Generated from routing/policy.json.", f"name = {quote(value['agent'])}",
-            f"description = {quote(descriptions[tier])}", f"model = {quote(value['model'])}",
-            f"model_reasoning_effort = {quote(value['effort'])}", f"developer_instructions = {quote(instructions)}", ""))
+            f"description = {quote(DESCRIPTIONS[tier])}", f"model = {quote(value['model'])}",
+            f"model_reasoning_effort = {quote(value['effort'])}", f"developer_instructions = {quote(instructions(p))}", ""))
+    return output
+
+
+def cursor_files(p: dict) -> dict[str, str]:
+    manifest = {"schema_version": 1, "engine": "cursor",
+                "tiers": {tier: {"model": p["cursor"][tier]["model"], "effort": p["cursor"][tier]["effort"], "agent": p["cursor"][tier]["agent"]} for tier in TIERS}}
+    output = {".cursor/model-routing.json": json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"}
+    for tier in TIERS:
+        output[f".cursor/agents/{p['cursor'][tier]['agent']}.md"] = agent_markdown(p, "cursor", tier, " In Cursor, run this role on the declared Grok model.")
+    return output
+
+
+def claude_files(p: dict) -> dict[str, str]:
+    # Sonnet is the session default, so it is the orchestrator; no permission or hook overrides.
+    settings = {"model": p["claude"]["standard"]["model"]}
+    output = {".claude/settings.json": json.dumps(settings, ensure_ascii=False, indent=2) + "\n"}
+    for tier in TIERS:
+        output[f".claude/agents/{p['claude'][tier]['agent']}.md"] = agent_markdown(p, "claude", tier)
     return output
 
 
 def validate(root: Path = ROOT) -> dict:
     p = policy(root)
-    for relative, content in codex_files(p).items():
+    expected = codex_files(p) | cursor_files(p) | claude_files(p)
+    for relative, content in expected.items():
         path = root / relative
         if not path.is_file() or path.read_text(encoding="utf-8") != content:
-            raise RoutingError(f"Native config drift: {relative}. Review and regenerate with render-codex.")
-    return {"valid": True, "codex_configs": 4, "hard_token_budget": False}
+            raise RoutingError(f"Native config drift: {relative}. Review and regenerate with render-codex, render-cursor or render-claude.")
+    return {"valid": True, "codex_configs": 4, "cursor_configs": 4, "claude_configs": 4, "hard_token_budget": False}
 
 
 def main() -> int:
@@ -243,6 +285,8 @@ def main() -> int:
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("validate")
     sub.add_parser("render-codex", help="Emit generated files as JSON; review before writing .codex/.")
+    sub.add_parser("render-cursor", help="Emit generated files as JSON; review before writing .cursor/.")
+    sub.add_parser("render-claude", help="Emit generated files as JSON; review before writing .claude/.")
     for command in ("doctor", "route"):
         cmd = sub.add_parser(command)
         cmd.add_argument("--runtime", required=True, type=Path)
@@ -255,6 +299,10 @@ def main() -> int:
             result = validate()
         elif args.command == "render-codex":
             result = codex_files(p)
+        elif args.command == "render-cursor":
+            result = cursor_files(p)
+        elif args.command == "render-claude":
+            result = claude_files(p)
         elif args.command == "doctor":
             result = doctor(p, read(args.runtime))
         else:
