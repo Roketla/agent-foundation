@@ -31,8 +31,9 @@ desactivada; vegeu la [documentació de Pi](https://github.com/earendil-works/pi
 **Clonar no executa cap IA.** L'entrevista comença en la primera interacció amb un
 agent que llegeixi `AGENTS.md`. Si el motor no el descobreix, demana-li explícitament
 que el llegeixi. `CLAUDE.md` és un enllaç d'instruccions per a motors que usin aquest
-fitxer. Les versions actuals de Codex i Pi poden descobrir `.agents/skills/`;
-altres eines poden requerir obrir el `SKILL.md` manualment.
+fitxer: importa només `AGENTS.md`. Codex, Cursor i Pi poden descobrir
+`.agents/skills/`; Claude pot obrir la skill pertinent per ruta. Consulta la
+[revisió de descoberta per motor](docs/foundation/context-loading.md).
 
 ## Requisits i comprovació local
 
@@ -41,10 +42,9 @@ control de versions. El motor d'IA s'instal·la i s'autentica fora del repositor
 
 ```sh
 python3 scripts/foundation.py status
-python3 scripts/foundation.py validate
-python3 scripts/routing.py validate
-python3 scripts/continuity.py validate
-python3 -m unittest discover -s tests -v
+sh scripts/check-foundation.sh
+# Si python3 és antic, selecciona un intèrpret compatible:
+PYTHON=python3.12 sh scripts/check-foundation.sh
 ```
 
 La plantilla ha de romandre `uninitialized`. Per assajar sense convertir-la en un
@@ -58,7 +58,7 @@ que la definició inicial és vàlida i s'han generat els documents.
 | Instruccions comunes | `AGENTS.md` | Entrada curta i lectura selectiva |
 | Entrevista | `.agents/skills/project-intake/` | Preguntes, represa i generació |
 | Perfils | `profiles/` | Corporate, ecommerce, SaaS, llibreria i servei |
-| Skills | `.agents/skills/` | 7 adaptadors, activats segons la tasca |
+| Skills | `.agents/skills/` | 7 adaptadors i SEO/GEO locals, activats segons la tasca |
 | Fonts originals | `vendor/` | Versions fixades, dependències i llicències disponibles |
 | Catàleg i integritat | `skills/catalog.json`, `skills/lock.json` | Procedència, opcions i SHA-256 |
 | Rols d'agent | `agents/` | Coordinació, implementació i revisió sota demanda |
@@ -71,7 +71,11 @@ que la definició inicial és vàlida i s'han generat els documents.
 | CI | `.github/workflows/foundation.yml` | Tests de la base i integritat del material vendored |
 
 Les skills incloses són Clean Code, Frontend Design, Web Design Guidelines,
-UX Heuristics, Security Audit de Cloudflare, Webapp Testing i Systematic Debugging.
+UX Heuristics, Security Audit de Cloudflare, Webapp Testing, Systematic Debugging,
+[SEO](.agents/skills/seo/SKILL.md) i [GEO](.agents/skills/geo/SKILL.md).
+SEO i GEO tenen entrades curtes i referències que es llegeixen només quan calen;
+no prometen indexació, posicionament ni citacions. Són deu skills descobribles
+comptant l’entrevista `project-intake`.
 Dues referències de Superpowers resolen les dependències de depuració. React Best
 Practices i Web Performance consten com a opcionals, **no instal·lades**.
 
@@ -79,7 +83,10 @@ La v0.3 inclou un [pilot real documentat](evals/pilot/README.md): Terra implemen
 Luna recupera el context en una sessió nova i el recorregut es comprova al navegador.
 Les mètriques inclouen un primer intent fallit; no s'hi atribueixen estalvis sense baseline.
 
-## Límits d'aquesta primera versió
+La v0.6 incorpora l’entrada compacta, la revisió de descoberta i SEO/GEO.
+Consulta els [canvis i la migració](releases/0.6.0.md).
+
+## Límits de la base
 
 - Els perfils orienten la definició i els controls; no són aplicacions ja implementades.
 - Els rols són instruccions portables. El motor aporta execució, permisos i subagents.

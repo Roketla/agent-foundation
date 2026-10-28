@@ -1,6 +1,6 @@
 ---
 name: webapp-testing
-description: Verify an available local web application, including critical journeys and error states, or reproduce a browser bug.
+description: Verify local web journeys and error states, or reproduce a browser bug.
 ---
 
 Read `vendor/skills/webapp-testing/SKILL.md`; helpers/examples are relative there.

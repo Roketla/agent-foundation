@@ -117,6 +117,24 @@
       "ref": "b052c32bab7dd493513260228a36c88294f343f1",
       "upstream_path": "skills/web-perf",
       "when": "Quan hi hagi una tasca de rendiment web i eines de mesura disponibles."
+    },
+    {
+      "name": "seo",
+      "installed": true,
+      "role": "base",
+      "source": ".agents/skills/seo",
+      "adapter": null,
+      "origin": "local",
+      "reviewed_on": "2026-10-28"
+    },
+    {
+      "name": "geo",
+      "installed": true,
+      "role": "base",
+      "source": ".agents/skills/geo",
+      "adapter": null,
+      "origin": "local",
+      "reviewed_on": "2026-10-28"
     }
   ],
   "references": [

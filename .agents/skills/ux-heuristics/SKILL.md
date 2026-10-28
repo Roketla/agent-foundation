@@ -1,6 +1,6 @@
 ---
 name: ux-heuristics
-description: Evaluate a user journey for usability, navigation, feedback and error recovery. Use when designing a flow or asked for UX feedback.
+description: Review user journeys for usability, navigation, feedback and error recovery.
 ---
 
 Read `vendor/skills/ux-heuristics/SKILL.md` and only relevant references; resolve

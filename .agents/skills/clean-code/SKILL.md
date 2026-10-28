@@ -1,6 +1,6 @@
 ---
 name: clean-code
-description: Improve maintainability in code changed by the current task, or perform a requested clean-code review. Avoid repository-wide audits for small edits.
+description: Improve maintainability in changed code or a requested review; avoid unrelated repository-wide audits.
 ---
 
 Read `vendor/skills/clean-code/SKILL.md` on demand; resolve supporting paths there.

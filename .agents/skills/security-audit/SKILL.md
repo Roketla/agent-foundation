@@ -1,6 +1,6 @@
 ---
 name: security-audit
-description: Review security-sensitive changes or perform an explicitly requested defensive audit using Cloudflare methodology. Use focused guidance by default.
+description: Review security-sensitive changes or an explicit audit with Cloudflare guidance and required isolation.
 ---
 
 Read `vendor/skills/security-audit/SKILL.md`; companions live in that directory.

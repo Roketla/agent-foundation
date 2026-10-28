@@ -1,6 +1,6 @@
 ---
 name: web-design-guidelines
-description: Review specified UI files for accessibility and interface implementation quality. Use for UI reviews, not unrelated code tasks.
+description: Review specified UI files for accessibility and interface quality.
 ---
 
 Read `vendor/skills/web-design-guidelines/SKILL.md` for the review method.

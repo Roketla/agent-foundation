@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: Diagnose a failure or unexpected behavior before changing code, with investigation proportional to the bug.
+description: Diagnose failures and unexpected behavior before changing code.
 ---
 
 Read `vendor/skills/systematic-debugging/SKILL.md` and relevant companions.

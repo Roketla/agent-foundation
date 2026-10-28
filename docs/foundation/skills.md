@@ -14,6 +14,16 @@ No carreguis totes les fonts en iniciar una sessió. Les dependències de Superp
 són lectures locals quan les demani la depuració. Les skills opcionals del catàleg
 no estan instal·lades i no són ordres disponibles fins que s'incorporin.
 
+## Skills locals i context
+
+`seo` i `geo` són skills pròpies a `.agents/skills/`, registrades al catàleg com
+a `role: base`. Les seves referències es carreguen per necessitat i incorporen
+fonts oficials i data de revisió. No són fonts vendored i no entren al lock de
+tercers. Cal revalidar les polítiques dels cercadors abans de recomanacions noves.
+
+Mantén una sola còpia descobrible de cada skill. L’entrada mínima i la descoberta
+per motor es documenten a `docs/foundation/context-loading.md`.
+
 ## Actualització d'una font
 
 1. Revisa canvis upstream, llicència, scripts i dependències. Tria un SHA de commit

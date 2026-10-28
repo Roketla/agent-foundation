@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Build or substantially redesign a web interface after the brief is defined, respecting the existing brand and design system.
+description: Build or redesign web UI from a defined brief, preserving the brand and design system.
 ---
 
 Read `vendor/skills/frontend-design/SKILL.md`; resolve supporting paths there.

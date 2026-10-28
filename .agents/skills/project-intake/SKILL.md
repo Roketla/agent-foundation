@@ -1,6 +1,6 @@
 ---
 name: project-intake
-description: Define a new product from this template or resume incomplete onboarding. Use when project status is uninitialized or in_progress; do not use for maintenance of agent-foundation itself.
+description: Define or resume an incomplete product brief; not for foundation maintenance.
 ---
 
 # Inici del projecte
