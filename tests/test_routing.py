@@ -214,6 +214,66 @@ class RoutingTests(unittest.TestCase):
 
 
 class NativeConfigTests(unittest.TestCase):
+    def test_native_agent_names_are_portable_and_match_route_selection(self):
+        p = r.policy()
+        for engine in r.NATIVE_ENGINES:
+            for tier in r.TIERS:
+                with self.subTest(engine=engine, tier=tier):
+                    name = p[engine][tier]["agent"]
+                    self.assertRegex(name, r"^[a-z][a-z-]+$")
+                    rt = {
+                        "schema_version": 1, "engine": engine, "inventory_source": "session",
+                        "current_model": "", "current_effort": "", "can_spawn": True,
+                        "can_select_model": True, "can_select_effort": True,
+                        "max_parallel_subagents": 2,
+                        "available_models": [{"id": p[engine][tier]["model"],
+                                              "efforts": [p[engine][tier]["effort"]]}],
+                    }
+                    task = r.read(ROOT / "routing/task.example.json") | {"complexity": tier}
+                    result = r.route(p, rt, task)
+                    self.assertEqual(result["action"], "spawn")
+                    self.assertEqual(result["selection"]["agent"], name)
+
+    def test_each_engine_emits_only_its_supported_model_fields(self):
+        p = r.policy()
+        for engine, render in (("claude", r.claude_files), ("cursor", r.cursor_files)):
+            for path, content in render(p).items():
+                if not path.endswith(".md"):
+                    continue
+                fields = dict(line.split(": ", 1) for line in content.split("---", 2)[1].strip().splitlines())
+                allowed = {"name", "description", "model"}
+                if engine == "claude":
+                    allowed.add("effort")
+                self.assertEqual(set(fields), allowed)
+                self.assertEqual(json.loads(fields["name"]), Path(path).stem)
+
+    def test_drift_and_legacy_duplicates_are_detected_in_every_engine(self):
+        p = r.policy()
+        expected = r.codex_files(p) | r.cursor_files(p) | r.claude_files(p)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "routing").mkdir()
+            (root / "routing/policy.json").write_text(json.dumps(p))
+            for relative, content in expected.items():
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content)
+            for engine in r.NATIVE_ENGINES:
+                extension = "toml" if engine == "codex" else "md"
+                relative = f".{engine}/agents/foundation-standard.{extension}"
+                path = root / relative
+                with self.subTest(engine=engine):
+                    path.write_text("model from an unrelated engine")
+                    with self.assertRaisesRegex(r.RoutingError, "Native config drift"):
+                        r.validate(root)
+                    path.write_text(expected[relative])
+                    legacy = path.with_name(f"foundation_standard.{extension}")
+                    legacy.write_text(expected[relative])
+                    with self.assertRaisesRegex(r.RoutingError, "Obsolete native agent"):
+                        r.validate(root)
+                    legacy.unlink()
+            self.assertTrue(r.validate(root)["valid"])
+
     def test_native_policy_cannot_accidentally_weaken_deep_tier(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -3,14 +3,15 @@
 Plantilla privada per començar webs corporatives, ecommerce, SaaS, llibreries compartides i serveis amb agents d'IA.
 Inclou una entrevista inicial que es pot reprendre, skills seleccionades, perfils,
 ADRs i validació automàtica. No imposa framework ni proveïdor; proposa una
-configuració editable de models per a Codex.
+configuració editable per a **Claude Code, OpenAI Codex i Cursor**, sobre una mateixa
+base d'instruccions, skills i estat del projecte.
 
 ## Com començar un projecte
 
 1. A GitHub, usa **Use this template → Create a new repository** i tria la visibilitat
    del nou projecte. Clona **el repositori nou**, no treballis el producte sobre
    `agent-foundation`. També pots clonar manualment i canviar `origin` al nou repo.
-2. Obre'l a Codex o Pi, accepta la confiança del projecte si el motor la demana i escriu:
+2. Obre'l a Claude Code, Codex o Cursor, accepta la confiança del projecte si el motor la demana i escriu:
 
    > Inicia aquest projecte. Llegeix AGENTS.md, pregunta'm què vull desenvolupar
    > i completa la configuració inicial abans de començar a implementar.
@@ -34,6 +35,23 @@ que el llegeixi. `CLAUDE.md` és un enllaç d'instruccions per a motors que usin
 fitxer: importa només `AGENTS.md`. Codex, Cursor i Pi poden descobrir
 `.agents/skills/`; Claude pot obrir la skill pertinent per ruta. Consulta la
 [revisió de descoberta per motor](docs/foundation/context-loading.md).
+
+## Tria el motor
+
+| Motor | Entrada del projecte | Configuració pròpia |
+|---|---|---|
+| Claude Code | `CLAUDE.md` importa `AGENTS.md` | `.claude/settings.json` i `.claude/agents/` |
+| OpenAI Codex | `AGENTS.md` | `.codex/config.toml` i `.codex/agents/` |
+| Cursor | `AGENTS.md` | `.cursor/agents/`; models del principal al selector de Cursor |
+
+Els tres comparteixen `.agents/skills/`, incloent SEO/GEO, i el mateix brief i pla
+per reprendre un projecte amb un altre motor. Claude pot llegir les skills per
+ruta. Cada motor té tres agents: `foundation-light`, `foundation-standard` i
+`foundation-deep`. Els models i esforços es defineixen a `routing/policy.json`;
+la seva disponibilitat es comprova a cada sessió.
+
+Segueix la [guia d'inici i verificació per motor](docs/foundation/engines.md).
+Pi conserva els prompts i el contracte portable existents.
 
 ## Requisits i comprovació local
 
@@ -63,7 +81,7 @@ que la definició inicial és vàlida i s'han generat els documents.
 | Catàleg i integritat | `skills/catalog.json`, `skills/lock.json` | Procedència, opcions i SHA-256 |
 | Rols d'agent | `agents/` | Coordinació, implementació i revisió sota demanda |
 | Selecció de models | `routing/`, `scripts/routing.py` | Nivells, capacitats i decisions portables |
-| Subagents de Codex | `.codex/` | Luna, Terra i Astra; màxim dos subagents simultanis |
+| Agents per motor | `.claude/`, `.codex/`, `.cursor/` | Tres nivells per motor generats des de la mateixa política |
 | Decisions | `docs/adr/` | ADRs breus amb context i conseqüències |
 | Represa | `scripts/continuity.py`, `project/work.json` en productes | Pla, bloquejos, següent acció i memòria amb fonts |
 | Avaluacions | `scripts/evaluate.py`, `evals/` | Qualitat, reintents i ús observat; dades desconegudes explícites |
@@ -84,7 +102,9 @@ Luna recupera el context en una sessió nova i el recorregut es comprova al nave
 Les mètriques inclouen un primer intent fallit; no s'hi atribueixen estalvis sense baseline.
 
 La v0.6 incorpora l’entrada compacta, la revisió de descoberta i SEO/GEO.
-Consulta els [canvis i la migració](releases/0.6.0.md).
+La v0.6.1 consolida els tres motors i corregeix el format dels agents de Cursor.
+Consulta els [canvis de 0.6.0](releases/0.6.0.md) i la
+[migració de 0.6.1](releases/0.6.1.md).
 
 ## Límits de la base
 

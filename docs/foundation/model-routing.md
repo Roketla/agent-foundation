@@ -20,8 +20,8 @@ contradictoris no es resolen automàticament amb un model més potent.
 ## Codex: configuració nativa
 
 `.codex/config.toml` defineix el principal, el subagent per defecte i un màxim de dos
-subagents simultanis. `.codex/agents/` defineix foundation_light, foundation_standard
-i foundation_deep amb model i esforç explícits. No altera permisos, credencials ni
+subagents simultanis. `.codex/agents/` defineix foundation-light, foundation-standard
+i foundation-deep amb model i esforç explícits. No altera permisos, credencials ni
 proveïdors globals. Els agents hereten les polítiques de la sessió: un rol de lectura
 és una instrucció de treball, no una sandbox addicional.
 
@@ -45,7 +45,7 @@ L'agent prepara `.local/runtime.json` amb capacitats observades en cada sessió.
 `.local/` està ignorat per Git. `routing/runtime.example.json` només és un esquelet:
 la disponibilitat és desconeguda i no autoritza delegació.
 
-- `engine`: codex, pi o other.
+- `engine`: codex, claude, cursor, pi o other. Indica el motor de la sessió activa.
 - `inventory_source`: session només si s'ha observat accés real en aquesta sessió;
   catalog si només hi ha un catàleg; unverified si es desconeix.
 - `available_models`: IDs exactes i `efforts`, una llista d'esforços suportats.
@@ -56,11 +56,11 @@ la disponibilitat és desconeguda i no autoritza delegació.
 - `max_parallel_subagents`: capacitat observada del motor; es pren el mínim amb
   el límit de policy. Usa zero si no es poden iniciar subagents.
 - `tiers`: per Pi/altres, llistes ordenades de `{model, effort}` per nivell. L'ordre
-  és la preferència de cost/qualitat revisada pel projecte. A Codex, omet aquest
-  camp: es deriva de policy i es rebutgen sobreescriptures dins de runtime.
+  és la preferència de cost/qualitat revisada pel projecte. A Codex, Claude i Cursor,
+  omet aquest camp: es deriva de policy i es rebutgen sobreescriptures dins de runtime.
 
-Els nivells natius es contrasten amb CODEX_CAPACITY a scripts/routing.py, una
-classificació revisada, no un catàleg viu. Un model nou requereix revisar aquesta
+Els nivells natius es contrasten amb CODEX_CAPACITY, CLAUDE_CAPACITY i CURSOR_CAPACITY
+a scripts/routing.py, classificacions revisades, no catàlegs vius. Un model nou requereix revisar aquesta
 classificació i els tests, no només canviar-ne el nom al JSON. Els mínims d'esforç
 natius són low/medium/high. Altres motors normalitzen els seus esforços a les
 etiquetes admeses només quan n'han comprovat l'equivalència; sense aquesta evidència
@@ -102,10 +102,18 @@ sessió només exposa `cursor-grok-4.6-high-fast` i `grok-4.7-xhigh`. L'esforç 
 lligat al slug; no s'inventa un esforç `low` que l'eina no pot aplicar.
 
 Amb `engine: cursor`, els nivells surten de la política. El runtime no els pot
-reescriure. `.cursor/model-routing.json` i `.cursor/agents/foundation_*.md` es
+reescriure. `.cursor/model-routing.json` i `.cursor/agents/foundation-*.md` es
 generen amb `render-cursor` i `validate` en comprova la deriva. En delegar, passa
 `selection.model` a l'eina de subagents de Cursor. Si el model no és a l'inventari
 observat de la sessió, la ruta queda `blocked`.
+
+`model-routing.json` és un manifest de la base, no una configuració nativa del
+selector de Cursor. Els agents Markdown natius declaren `name`, `description` i
+`model`; l'esforç es conserva a policy i al manifest perquè els slugs Grok fixats
+ja el codifiquen. No s'emet un camp `effort` que Cursor no documenta. Per models
+amb paràmetres separables cal revisar el seu format natiu abans de canviar-los.
+Comprova el model executat: Cursor pot aplicar un fallback per restriccions del compte.
+Font: [subagents de Cursor](https://cursor.com/docs/subagents).
 
 ## Claude Code: Sonnet orquestra
 
@@ -120,15 +128,20 @@ l'orquestrador i va amb Sonnet; delega en subagents amb model explícit:
 
 `role_floors` (a policy, per a tots els motors) fixa un mínim per rol: l'implementador
 pot ser light, l'investigador mai baixa de standard i el revisor sempre és deep. El
-risc i la incertesa segueixen pujant el nivell per sobre del mínim. Pagaments, Square,
+risc i la incertesa segueixen pujant el nivell per sobre del mínim. Pagaments,
 dades de clients i migracions són risc alt encara que el diff sigui petit.
 
 `.claude/settings.json` només fixa `model` al valor standard (Sonnet) i
-`.claude/agents/foundation_*.md` porta el `model` i l'`effort` de cada nivell. Es
+`.claude/agents/foundation-*.md` porta el `model` i l'`effort` de cada nivell. Es
 generen amb `render-claude` i `validate` en comprova la deriva. No hi ha permisos ni
 hooks generats. `CLAUDE_CAPACITY` a `scripts/routing.py` és la classificació revisada:
 un model nou s'hi afegeix, amb tests, no només al JSON. Comprova a la sessió que
 l'`effort` de la capçalera s'aplica; si no es pot verificar, indica-ho.
+Font: [subagents de Claude Code](https://code.claude.com/docs/en/sub-agents).
+
+El motor actiu tria el seu bloc de política. Sonnet és el principal de Claude;
+la configuració de Codex i el selector de Cursor conserven els seus valors propis.
+No hi ha un motor principal global que substitueixi els altres.
 
 ## Pi i altres motors
 

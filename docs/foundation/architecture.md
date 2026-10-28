@@ -38,11 +38,15 @@ atacant amb accés d'escriptura al repositori. Els canvis manuals es conserven.
 
 ## Portabilitat i recursos
 
-El motor d'IA proporciona conversa, model, eines i permisos. Codex i Pi comparteixen
-les instruccions i les skills descobertes a `.agents/skills/`. La configuració local
-de Codex proposa Terra com a principal i tres nivells de subagents; les preferències
-explícites de l'usuari prevalen. No es canvien proveïdors ni confiança globals. Amb altres motors, l'entrada
-explícita és llegir AGENTS.md i el SKILL.md necessari.
+El motor d'IA proporciona conversa, model, eines i permisos. Claude Code, Codex i
+Cursor comparteixen `AGENTS.md`, `.agents/skills/`, el brief i el pla. Claude importa
+l'entrada amb `CLAUDE.md` i obre la skill pertinent per ruta; Codex i Cursor en
+descobreixen les metadades. Pi conserva la mateixa entrada portable.
+
+Cada motor té tres nivells d'agents natius, generats des de `routing/policy.json`.
+La configuració local proposa Terra a Codex i Sonnet a Claude; Cursor conserva el
+selector del principal. Les preferències explícites de l'usuari prevalen. No es
+canvien proveïdors ni confiança globals. Vegeu la [guia per motor](engines.md).
 
 Només les metadades dels adaptadors han de ser descobertes inicialment; fonts i
 referències es llegeixen sota demanda. No s'han definit promeses percentuals

@@ -22,6 +22,12 @@ carrega GEO automàticament, ni a l'inrevés.
 | Cursor | Skills a `.agents/skills/` i `.cursor/skills/`, amb compatibilitat per altres rutes | No crear còpies a `.cursor/skills/` ni `.codex/skills/` |
 | Pi | Noms, descripcions i rutes de les skills; també admet `.agents/skills/` | Una sola font. Els prompts de `.pi/prompts/` s'invoquen quan calen |
 
+La [guia per motor](engines.md) explica com iniciar i verificar aquestes entrades.
+Cursor també pot descobrir agents a `.claude/agents/` i `.codex/agents/`; els
+mateixos noms `foundation-light`, `foundation-standard` i `foundation-deep`
+permeten que les definicions de `.cursor/agents/` tinguin precedència, segons
+la seva [documentació de subagents](https://cursor.com/docs/subagents).
+
 No s'han executat sessions de Claude, Cursor ni Pi per provar-ne la càrrega.
 La taula combina inspecció dels fitxers de la plantilla amb la documentació oficial;
 la configuració personal i les versions instal·lades poden canviar el resultat.

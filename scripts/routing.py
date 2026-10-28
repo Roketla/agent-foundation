@@ -66,7 +66,7 @@ def native_block(block: dict, capacity: dict, label: str) -> None:
         minimum = ("low", "medium", "high")[TIERS.index(tier)]
         if EFFORT_ORDER.index(value["effort"]) < EFFORT_ORDER.index(minimum):
             raise RoutingError("Native effort is below the tier minimum.")
-        if value.get("agent") != "foundation_" + tier:
+        if value.get("agent") != "foundation-" + tier:
             raise RoutingError("Unexpected native agent name.")
 
 
@@ -224,9 +224,13 @@ def instructions(p: dict, suffix: str = "") -> str:
 
 def agent_markdown(p: dict, engine: str, tier: str, suffix: str = "") -> str:
     value = p[engine][tier]
-    return "\n".join(("---", f"name: {json.dumps(value['agent'])}", f"model: {json.dumps(value['model'])}",
-                      f"effort: {json.dumps(value['effort'])}", f"description: {json.dumps(DESCRIPTIONS[tier], ensure_ascii=False)}",
-                      "---", "", instructions(p, suffix), ""))
+    header = ["---", f"name: {json.dumps(value['agent'])}", f"model: {json.dumps(value['model'])}"]
+    # Claude supports an effort field; Cursor's observed Grok slugs encode it.
+    # Keep Cursor's effort in the portable policy, not an unsupported native field.
+    if engine == "claude":
+        header.append(f"effort: {json.dumps(value['effort'])}")
+    header.append(f"description: {json.dumps(DESCRIPTIONS[tier], ensure_ascii=False)}")
+    return "\n".join((*header, "---", "", instructions(p, suffix), ""))
 
 
 def codex_files(p: dict) -> dict[str, str]:
@@ -277,6 +281,12 @@ def validate(root: Path = ROOT) -> dict:
         path = root / relative
         if not path.is_file() or path.read_text(encoding="utf-8") != content:
             raise RoutingError(f"Native config drift: {relative}. Review and regenerate with render-codex, render-cursor or render-claude.")
+    for engine in NATIVE_ENGINES:
+        extension = "toml" if engine == "codex" else "md"
+        for tier in TIERS:
+            legacy = root / f".{engine}/agents/foundation_{tier}.{extension}"
+            if legacy.exists():
+                raise RoutingError(f"Obsolete native agent: {legacy.relative_to(root)}. Migrate to foundation-{tier} before removing it.")
     return {"valid": True, "codex_configs": 4, "cursor_configs": 4, "claude_configs": 4, "hard_token_budget": False}
 
 

@@ -5,17 +5,17 @@
     "light": {
       "model": "cursor-grok-4.6-high-fast",
       "effort": "high",
-      "agent": "foundation_light"
+      "agent": "foundation-light"
     },
     "standard": {
       "model": "cursor-grok-4.6-high-fast",
       "effort": "high",
-      "agent": "foundation_standard"
+      "agent": "foundation-standard"
     },
     "deep": {
       "model": "grok-4.7-xhigh",
       "effort": "xhigh",
-      "agent": "foundation_deep"
+      "agent": "foundation-deep"
     }
   }
 }
